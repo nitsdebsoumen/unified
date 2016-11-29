@@ -1,0 +1,46 @@
+<?php
+App::uses('AppModel', 'Model');
+#App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
+/**
+ * User Model
+ *
+ * @property EmailNotification $EmailNotification
+ * @property FavoriteList $FavoriteList
+ * @property FavoriteShop $FavoriteShop
+ * @property FavoriteTreasury $FavoriteTreasury
+ * @property InboxMessage $InboxMessage
+ * @property Preference $Preference
+ * @property Privacy $Privacy
+ * @property Security $Security
+ * @property SentMessage $SentMessage
+ * @property ShippingAddress $ShippingAddress
+ * @property Shop $Shop
+ */
+class TaskImage extends AppModel {
+
+
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
+	
+
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'Task' => array(
+			'className' => 'Task',
+			'foreignKey' => 'task_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+}

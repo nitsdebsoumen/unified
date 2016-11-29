@@ -1,0 +1,412 @@
+<!-- <script src="https://www.google.com/recaptcha/api.js"></script> -->
+<script type="text/javascript">
+// $.ajaxSetup({ cache: true });
+// $.getScript('//connect.facebook.net/en_US/all.js', function(){
+//     FB.init({ appId: '1509350872727862'});  		
+//     $(".flogin").on("click", function(e){
+//         e.preventDefault();				
+//         FB.login(function(response){
+//                 // FB Login Failed //
+//                 if(!response || response.status !== 'connected') {
+//                         alert("Given account information are not authorised", "Facebook says");
+//                 }else{
+//                     // FB Login Successfull //
+//                     FB.api('/me', {fields: 'id,name,email'}, function(fbdata){						
+//                             console.log(fbdata); //
+//                             var fb_user_id = fbdata.id;	
+//                             var fb_name = fbdata.name;
+//                             var fb_name_split = fb_name.split(' ');
+//                             var fb_first_name = fb_name_split[0];
+//                             var fb_last_name = fb_name_split[1];
+//                             var fb_email = fbdata.email;
+//                             var fb_username = fbdata.username;
+//                             $.post('<?php echo($this->webroot);?>users/autoLogin/'+fb_user_id,function(data){
+//                                     var newData = '';
+//                                     newData = data.split('@@@@');
+//                                     if(newData[0]=='Register'){
+//                                         //alert(fbdata);
+//                                             $("#UserFbUserId").val(fb_user_id);
+//                                             $("#UserFirstName").val(fb_first_name);
+//                                             $("#UserLastName").val(fb_last_name);                                                                                   $("#UserEmail").val(fb_email);
+//                                             $("#UserPassword").val(fb_user_id);
+//                                             $("#UserConPassword").val(fb_user_id);
+//                                             $('#SignUpFrm').submit();
+//                                             //$("#UserUsername").val(fb_username);
+//                                     } else if(newData[0]=='Login'){
+//                                             window.location.href="<?php echo($this->webroot)?>users/dashboard";
+//                                     }
+//                              });
+//                     })
+//                 }
+//         }, {scope:"email"});
+//     });
+// });
+</script>
+<script type="text/javascript">
+
+// function Checkvalidate(){
+//     var pass2=$("#UserConPassword").value;
+//     var pass1=$("#UserPassword").value;
+//     if(pass1!=pass2){
+//        alert('Passwords Don\'t Match'); 
+//        return false;
+//     }else{
+//        return true;
+//     }
+// }
+// function chkEmailexists(email){
+// 	//alert('<?php echo($this->webroot);?>users/emailExists/'+email);
+// 	$.post('<?php echo($this->webroot);?>users/emailExists/'+email, function(data){
+// 		if(data!=''){
+// 			//alert(data);
+// 			$("#emailErr").html(data);
+// 			//document.getElementById("UserEmail").setCustomValidity(data);
+// 		} else {
+// 			$("#emailErr").html('');
+// 			//document.getElementById("UserEmail").setCustomValidity('');
+// 		}
+// 	});
+// }
+// function initialize_running_task() {
+//     var defaultBounds = new google.maps.LatLngBounds(
+//     new google.maps.LatLng(7.623887, 68.994141),
+//     new google.maps.LatLng(37.020098, 97.470703));
+
+//     var input1 = document.getElementById('UserLocation');
+//     var options = {
+//         bounds: defaultBounds,
+//         types: ['geocode'],
+//     };
+//     autocomplete1 = new google.maps.places.Autocomplete(input1, options);
+// }
+</script>
+<script>
+    // $(document).ready(function(){       
+    //     initialize_running_task();
+    // });
+</script>
+<!--<section class="login">
+    <div class="container">
+            <div class="row">
+                    <div class="col-md-6">
+                            <h2>Have’t joined yet? Sign up</h2>
+                            <form class="form-horizontal" id="SignUpFrm" method="post" action="<?php //echo $this->webroot; ?>users/signup" onsubmit="Checkvalidate();">
+                                <input type="hidden" name="data[User][fb_user_id]" id="UserFbUserId" value=""/>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">First name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="data[User][first_name]" maxlength="100" id="UserFirstName" required="required" placeholder="Enter your first">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Last name:</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" name="data[User][last_name]" maxlength="50" id="UserLastName" required="required" placeholder="Enter your last name">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Email:</label>
+                                <div class="col-sm-8">
+                                  <input type="email" class="form-control" name="data[User][email]" maxlength="100" id="UserEmail" required="required" placeholder="Enter your email" onkeyup="chkEmailexists(this.value)" onblur="chkEmailexists(this.value)">
+                                  <br/><div id="emailErr" style="color:red;"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Username:</label>
+                                <div class="col-sm-8">
+                                  <input type="email" class="form-control" name="data[User][username]" maxlength="100" id="UserUsername" required="required" placeholder="Enter your username" >
+                                  <br/><div id="usernameErr" style="color:red;"></div>
+                                </div>
+                              </div>	
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Location:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="data[User][location]" id="UserLocation" placeholder="Enter your Location">
+                                </div>
+                              </div>  
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Zipcode:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="data[User][zipcode]" id="Zipcode" placeholder="Enter your Zipcode">
+                                </div>
+                              </div>    
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Password:</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" name="data[User][password]" id="UserPassword" required="required" placeholder="Enter your password">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Confirm Password:</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" name="data[User][conpassword]" id="UserConPassword" required="required" placeholder="Re-enter your password">
+                                </div>
+                              </div> 
+                              <div class="form-group">
+                                <label for="" class="col-sm-4 control-label">Profile Type:</label>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" name="Post_type" value="Post" checked="checked" />&nbsp;Post Errand
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="checkbox" name="Run_type" value="Run" />&nbsp;Run Errand
+                                </div>
+                              </div>   
+                              <div class="form-group">
+                                  <label for="" class="col-sm-4 control-label">&nbsp;</label>
+                                <div class="col-sm-8">
+                                   <div class="g-recaptcha" data-sitekey="6Lf7SxoTAAAAALnqcZ3yjGssxicdBMzJzuMYPc25"></div>
+                                </div>
+                              </div> 
+                              <div class="form-group">
+                                  <label for="" class="col-sm-4 control-label">&nbsp;</label>
+                                <div class="col-sm-8">
+                                    <p><input type="checkbox" required="required"> Yes, I understand and agree to the <?php //echo $sitesetting['SiteSetting']['site_name'];?> <a href="<?php// echo $this->webroot;?>contents/view/terms-conditions">Terms of Service</a>, including the <a href="<?php //echo $this->webroot;?>contents/view/contractor-policies">Contractor Policy</a>, <a href="<?php //echo $this->webroot;?>contents/view/client-policies">Client Policy</a> and <a href="<?php //echo $this->webroot;?>contents/view/privacy-policy">Privacy Policy</a>.</p>
+                                </div>
+                              </div>   
+                                 
+                              <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8">
+                                  <button type="submit" class="btn btn-default">Sign Up</button>
+                                </div>
+                              </div>
+                              <p>Have an account already? <a href="<?php //echo $this->webroot;?>users/login">Sign in</a></p>
+                            </form>
+                    </div>
+                    <div class="col-md-1 or">
+                            <h2>OR</h2>
+                    </div>
+                    <div class="col-md-5 socials">
+                            <ul>
+                                    <li><a href="Javascript: void(0);" class="flogin"><img src="<?php //echo $this->webroot;?>images/fb.png" alt="" /></a></li>
+                                    <li><a href="<?php// echo $this->webroot.'users/twitter_login'; ?>"><img src="<?php //echo $this->webroot;?>images/tweet.png" alt="" /></a></li>
+                            </ul>
+                    </div>
+            </div>
+    </div>
+</section>-->
+<section class="login_body">
+
+    <div class="login-holder">
+        <?php echo $this->Session->flash(); ?>
+        <h1>Register as a</h1>
+        <p id="social_login_msg" class="text-center" style="border-style:dotted;border-width: 2px;padding:5px;display:none;"></p>
+        <ul class="nav nav-tabs new_tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#Provider" aria-controls="Provider" role="tab" data-toggle="tab">Training Provider</a></li>
+            <li role="presentation"><a href="#User" aria-controls="User" role="tab" data-toggle="tab">Corporate User</a></li>
+            <li role="presentation"><a href="#Individual" aria-controls="Individual" role="tab" data-toggle="tab">Event Provider</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="Provider">
+
+                <form action="<?php echo $this->webroot.'users/signup';?>" method="post" id="signup1">
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][first_name]" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][last_name]" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][business_name]" placeholder="Business Name">
+                    </div> 
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required,custom[email]]" id="" name="data[User][email]" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required,custom[phone],minSize[10]]" id="" name="data[User][phone]" placeholder="Phone">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control validate[required]" id="password" name="data[User][password]" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control validate[required,equals[password]]" id="" name="data[User][conpassword]" placeholder="Confirm Password">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input class="validate[required]" name="user_terms2" type="checkbox" value="1"> I agree to Ladder’s <a href="">User Terms *</a>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="data[User][admin_type]" value="1">
+                        <button type="submit" class="btn btn-default pull-right">Register</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Already have account? <a href="<?php echo $this->webroot; ?>users/login">Sign In</a></label>
+                    </div>
+                </form>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="User">
+                <form action="<?php echo $this->webroot.'users/signup';?>" id="signup2" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][first_name]" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][last_name]" placeholder="Last Name">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required,custom[email]]" id="" name="data[User][email]" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required,custom[phone],minSize[10]]" id="" name="data[User][phone]" placeholder="Phone">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control validate[required]" id="password1" name="data[User][password]" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control validate[required,equals[password1]]" id="" name="data[User][conpassword]" placeholder="Confirm Password">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input class="validate[required]" name="user_terms1" type="checkbox" value="1"> I agree to Ladder’s <a href="">User Terms *</a>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="data[User][admin_type]" value="3">
+                        <button type="submit" class="btn btn-default pull-right">Register</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Already have account? <a href="<?php echo $this->webroot; ?>users/login">Sign In</a></label>
+                    </div>
+                </form>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="Individual">
+                <form action="<?php echo $this->webroot.'users/signup';?>" method="post" id="signup3">
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][first_name]" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][last_name]" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required]" id="" name="data[User][business_name]" placeholder="Event Provider Name">
+                    </div> 
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required,custom[email]]" id="" name="data[User][email]" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control validate[required,custom[phone],minSize[10]]" id="" name="data[User][phone]" placeholder="Phone">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control validate[required]" id="password2" name="data[User][password]" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control validate[required,equals[password2]]" id="" name="data[User][conpassword]" placeholder="Confirm Password">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input class="validate[required]" name="user_terms" type="checkbox" value="1"> I agree to Ladder’s <a href="">User Terms *</a>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="data[User][admin_type]" value="2">
+                        <button type="submit" class="btn btn-default pull-right">Register</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Already have account? <a href="<?php echo $this->webroot; ?>users/login">Sign In</a></label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="or"><span>Or</span></div>
+        <div class="social_buttons">
+            <button class="fb_btn" id="fblogin"><i class="fa fa-facebook"></i> Login with Facebook </button>
+            <button class="twit_btn"><i class="fa fa-twitter"></i> Login with Twitter </button>
+        </div>
+    </div>
+</section>
+
+<div id="set_email" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Set Email</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="" name="" placeholder="Enter email" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="set_email_submit" name="set_email_submit" placeholder="Enter email">Submit</button> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    (function ($) {
+        $("#signup1,#signup2,#signup3").validationEngine();
+        $('#set_email').modal('show');
+    })(jQuery);
+    
+    //Facebook login
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function () {
+        FB.init({
+            appId: '147920998965529',
+            status: true,
+            xfbml: true,
+            version: 'v2.6'
+        });
+        $('#fblogin').click(function (e) {
+            e.preventDefault();
+            FB.login(function (response) {
+                console.log(response);
+                if (!response || response.status !== 'connected') {
+                    alert('Failed');
+                } else {
+                    
+                    FB.api('/me', {fields: 'id,first_name,last_name,email'}, function (response) {
+                        console.log(response);
+                        var fb_user_id      = response.id;
+                        var fb_first_name   = response.first_name;
+                        var fb_last_name    = response.last_name;
+                        var fb_email        = response.email;
+                        //console.log(JSON.stringify(response));
+                        
+                        $.ajax({
+                            url: '<?php echo $this->webroot.'users/socialSignup'; ?>',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                fbId: fb_user_id,
+                                email: fb_email,
+                                fname: fb_first_name,
+                                lname: fb_last_name,
+                                signupby: 'facebook'
+                            },
+                            beforeSend: function() {
+                                $('#social_login_msg').css({
+                                        'border-color': '#0f0'
+                                }).text('Sending please wait...').show();
+                            },
+                            success: function (data) {
+                                if(data.Ack == '1') {
+                                    $('#social_login_msg').css({
+                                        'border-color': '#0f0'
+                                    }).text(data.msg).show();
+                                    
+                                    setTimeout(function(){
+                                        window.location.href = '<?php echo $this->webroot; ?>';
+                                    }, 3000);
+                                } else {
+                                    $('#social_login_msg').css({
+                                        'border-color': '#0f0'
+                                    }).text(data.msg).show();
+                                    setTimeout(function(){
+                                        $('#social_login_msg').hide();
+                                    }, 3000);
+                                }
+                            }
+                        });
+                    });
+                }
+            }, {scope: 'public_profile,email'});
+        });
+
+    });
+
+</script>

@@ -1,0 +1,35 @@
+<?php ?>
+<script>
+    $(document).ready(function () {
+        $("#BlogAdminAddForm").validationEngine();
+    });
+</script>
+<div class="blogs form">
+<?php echo $this->Form->create('Faq',array('enctype' => 'multipart/form-data')); ?>
+    <fieldset>
+        <legend><?php echo __('Add Faq'); ?></legend>
+	<?php
+		?>
+        <div class="input select"><label for="FaqFaqcategories">Faqcategories</label>
+            <select name="data[Faq][faq_category_id]" required="required" id="FaqFaqcategoriesId">
+			<?php if(isset($faqcategories) && !empty($faqcategories))
+			{
+			foreach($faqcategories as $cat){?>
+                <option value="<?php echo $cat['FaqCategory']['id']?>" ><?php echo $cat['FaqCategory']['name']?></option>
+
+			<?php }
+			}?>
+            </select>
+        </div>
+		<?php
+		echo $this->Form->input('questions',array('required'=>'required'));
+		
+	?>
+        <div class="input text">
+            <label for="BlogAnswer">Answer</label>
+            <textarea name="data[Faq][answer]" required="required" type="text" id="BlogAnswer" style="height:158px"></textarea>
+        </div>
+    </fieldset>
+<?php echo $this->Form->end(__('Submit')); ?>
+</div>
+<?php //echo($this->element('admin_sidebar'));?>

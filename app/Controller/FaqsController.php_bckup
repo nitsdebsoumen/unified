@@ -1,0 +1,141 @@
+<?php
+App::uses('AppController', 'Controller');
+/**
+ * Faqs Controller
+ *
+ * @property Faq $Faq
+ * @property PaginatorComponent $Paginator
+ */
+
+class FaqsController extends AppController {
+/**
+ * Components
+ *
+ * @var array
+ */
+
+	public $components = array('Paginator');
+	public $paginate = array(
+        'limit' => 25,
+        'order' => array(
+            'Faq.id' => 'desc'
+        )
+    );
+	
+	
+
+
+	public function index() {
+		$this->Faq->recursive = 0;
+		$options = array('conditions' => array('Faq.is_active' => '1'),'order'=>'Faq.post_date DESC');
+		$blogs = $this->Faq->find('all',$options);
+		$this->set(compact('blogs'));
+	}
+
+
+
+	public function admin_index() {
+            $is_admin = $this->Session->read('is_admin');
+            if(!isset($is_admin) && $is_admin==''){
+               $this->redirect('/admin');
+            }    
+		$this->loadModel('FaqCategory');
+		$this->Faq->recursive = 0;
+		$this->Paginator->settings = $this->paginate;
+		$this->set('faqs', $this->Paginator->paginate());
+	}
+
+
+	public function view($id = null) {
+		if (!$this->Faq->exists($id)) {
+			throw new NotFoundException(__('Invalid Faq'));
+		}
+		$options = array('conditions' => array('Faq.' . $this->Faq->primaryKey => $id));
+		$this->set('Faq', $this->Faq->find('first', $options));
+	}
+
+
+
+	public function admin_view($id = null) {
+            $is_admin = $this->Session->read('is_admin');
+            if(!isset($is_admin) && $is_admin==''){
+               $this->redirect('/admin');
+            }
+		$this->loadModel('FaqCategory');
+		if (!$this->Faq->exists($id)) {
+			throw new NotFoundException(__('Invalid Faq'));
+		}
+		$options = array('conditions' => array('Faq.' . $this->Faq->primaryKey => $id));
+		$this->set('blog', $this->Faq->find('first', $options));
+	}
+
+	
+	public function admin_add() {
+            $is_admin = $this->Session->read('is_admin');
+            if(!isset($is_admin) && $is_admin==''){
+               $this->redirect('/admin');
+            }
+		$this->loadModel('FaqCategory');
+		if ($this->request->is('post')) {
+		//pr($this->request->data);exit;
+			$this->request->data['Faq']['post_date'] = date('Y-m-d H:i:s');
+			$this->request->data['Faq']['is_active'] = 1;
+			$this->Faq->create();
+			if ($this->Faq->save($this->request->data)) {
+				$this->Session->setFlash(__('The Faq has been saved.'));
+				return $this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('The Faq could not be saved. Please, try again.'));
+			}
+		}
+		$faqcategories = $this->FaqCategory->find('all',array('conditions'=>array('FaqCategory.active'=>1)));
+		$this->set(compact('users','faqcategories'));
+	}
+
+
+	public function admin_edit($id = null) {
+            $is_admin = $this->Session->read('is_admin');
+            if(!isset($is_admin) && $is_admin==''){
+               $this->redirect('/admin');
+            }
+		$this->loadModel('FaqCategory');
+		if (!$this->Faq->exists($id)) {
+			throw new NotFoundException(__('Invalid Faq'));
+		}
+		if ($this->request->is(array('post', 'put'))) {
+			if ($this->Faq->save($this->request->data)) {
+				$this->Session->setFlash(__('The Faq has been saved.'));
+				return $this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('The Faq could not be saved. Please, try again.'));
+			}
+		} else {
+			
+			$options = array('conditions' => array('Faq.' . $this->Faq->primaryKey => $id));
+			$this->request->data = $this->Faq->find('first', $options);
+			$faqcategories = $this->FaqCategory->find('all');
+		}
+		$this->set(compact('users','faqcategories'));
+		}
+
+	public function admin_delete($id = null) {
+            $is_admin = $this->Session->read('is_admin');
+            if(!isset($is_admin) && $is_admin==''){
+               $this->redirect('/admin');
+            }
+		$this->Faq->id = $id;
+		if (!$this->Faq->exists()) {
+			throw new NotFoundException(__('Invalid Faq'));
+		}
+
+		$this->request->onlyAllow('post', 'delete');
+		if ($this->Faq->delete()) {
+			$this->Session->setFlash(__('The Faq has been deleted.'));
+		} else {
+			$this->Session->setFlash(__('The Faq could not be deleted. Please, try again.'));
+		}
+		return $this->redirect(array('action' => 'index'));
+	}
+
+ }
+

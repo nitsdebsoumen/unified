@@ -1,0 +1,321 @@
+<?php
+echo $this->Html->script('jquery.imgareaselect.min',array('inline'=>false));
+
+$per_profile_img=isset($this->request->data['User']['profile_img'])?$this->request->data['User']['profile_img']:'';
+$per_tagline=isset($this->request->data['User']['tagline'])?$this->request->data['User']['tagline']:'';
+$per_location=isset($this->request->data['User']['location'])?$this->request->data['User']['location']:'';
+$per_zipcode=isset($this->request->data['User']['zipcode'])?$this->request->data['User']['zipcode']:'';
+$per_abn=isset($this->request->data['User']['abn'])?$this->request->data['User']['abn']:'';
+$per_paypal_email=isset($this->request->data['User']['paypal_email'])?$this->request->data['User']['paypal_email']:'';
+$per_phone_no=isset($this->request->data['User']['phone_no'])?$this->request->data['User']['phone_no']:'';
+$per_about=isset($this->request->data['User']['about'])?$this->request->data['User']['about']:'';
+$TotPerProgress=30;
+if($per_profile_img!=''){
+    $TotPerProgress+=10;
+}
+if($per_tagline!=''){
+    $TotPerProgress+=10;
+}
+if($per_location!=''){
+    $TotPerProgress+=10;
+}
+if($per_zipcode!=0){
+    $TotPerProgress+=10;
+}
+if($per_abn!=0){
+    $TotPerProgress+=10;
+}
+/*if($per_paypal_email!=''){
+    $TotPerProgress+=10;
+}*/
+if($per_phone_no!=0){
+    $TotPerProgress+=10;
+}
+if($per_about!=''){
+    $TotPerProgress+=10;
+}
+
+$thumb_width = "100";						
+$thumb_height = "100";	
+$uploadImgPath = WWW_ROOT.'user_images';
+?>     
+<style>
+    .progress-bar-warning {
+        color: #ffffff;
+        text-align: center;
+        
+    }
+</style>
+<!--<script type="text/javascript" src="<?php echo $this->webroot;?>js/jquery-pack.js"></script>-->
+<?php echo $this->element('user_menu'); ?>
+<section class="main_body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <?php echo $this->element('user_sidebar'); ?>
+            </div>
+            <div class="col-md-9">
+                <div class="whit_bg">
+                <div class="right_dash_board">
+                    <!--<p class="pull-right">This section is <?php echo $TotPerProgress;?>% complete</p>-->
+                    <div class="progress">
+                        <div class="<?php if($TotPerProgress > 79){ echo 'progress-bar-success';}else{ echo 'progress-bar-warning';}?>" role="progressbar" aria-valuenow="<?php echo $TotPerProgress;?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $TotPerProgress;?>%">
+                          <?php echo $TotPerProgress;?>% complete
+                        </div>
+                    </div>
+                    <h1>Profile</h1>
+                    
+                    <?php
+                    //if(!empty($per_profile_img)){
+                    if($per_profile_img!='' && file_exists($uploadImgPath . '/' . $per_profile_img)){    
+                    ?>
+                    
+                    <div class="col-md-12" style=" margin: 0; padding: 0;">
+                        <div class="col-md-8" style=" margin: 0; padding: 0;">
+                            <img src="<?php echo $this->webroot;?>user_images/<?php echo $per_profile_img; ?>" id="thumbnail">
+                        </div>
+                        <!--<div class="col-md-3" id="PreviewImg" style="position:relative; overflow:hidden; width:<?php echo $thumb_width;?>px; height:<?php echo $thumb_height;?>px;">
+                            <img src="<?php echo $this->webroot;?>user_images/<?php echo $per_profile_img; ?>" style="position: relative;" alt="Thumbnail Preview" id="PreviewImgThumb" />
+			</div>
+                        <form class="edit_profile" name="thumbnail" action="<?php echo $this->webroot;?>users/createthumb" method="post">
+                            <input type="hidden" name="hid_pre_profile_img" value="<?php echo($this->request->data['User']['profile_img']);?>" />
+                            <input type="hidden" name="x1" value="" id="x1" />
+                            <input type="hidden" name="y1" value="" id="y1" />
+                            <input type="hidden" name="x2" value="" id="x2" />
+                            <input type="hidden" name="y2" value="" id="y2" />
+                            <input type="hidden" name="w" value="" id="w" />
+                            <input type="hidden" name="h" value="" id="h" />
+                            <div class="col-md-4" style="padding-top: 20px; padding-left: 0;">
+                                <button type="submit" id="save_thumb" onclick="return save_change_validate();">Save Changes</button>
+                            </div>
+                        </form>-->
+                    </div>
+                    <?php } ?>
+                    
+                    <form class="edit_profile" action="<?php echo $this->webroot; ?>users/editprofile" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+                        <input type="hidden" name="data[User][id]" id="UserId" value="<?php echo($this->request->data['User']['id']);?>"/>
+                        <input type="hidden" name="data[User][hidprofile_img]" id="UserHidProfileImg" value="<?php echo($this->request->data['User']['profile_img']);?>"/>
+                        <input type="hidden" name="data[User][hidcover_img]" id="UserHidCoverImg" value="<?php echo($this->request->data['User']['cover_img']);?>"/>
+                        <div class="row"><div class="form-group col-md-12">&nbsp;</div></div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="UserProfileImg">Upload Image </label>
+                                <div class="input-group">
+                                    <!--<span class="input-group-addon">Upload photo</span>-->
+                                    <div class="choose_file">
+                                        <span>Upload photo</span>
+                                        <input type="file" name="data[User][profile_img]" id="UserProfileImg" class="form-control" <?php //if($this->request->data['User']['profile_img']==''){ echo 'required="required"';}?>/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Gender">Gender</label>
+                                <input type="radio" name="data[User][gender]" id="UserGender" value="M" required="required" <?php echo(($this->request->data['User']['gender']=='M')?'checked':'');?>/>&nbsp;Male &nbsp;<input type="radio" name="data[User][gender]" id="UserGender" value="F" required="required" <?php echo(($this->request->data['User']['gender']=='F')?'checked':'');?>/>&nbsp;Female&nbsp;
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-md-6">
+                                <label for="UserFirstName">First name *</label>
+                                <input type="text" name="data[User][first_name]" maxlength="50" id="UserFirstName" class="form-control" placeholder="Enter your First name" required="required" value="<?php echo($this->request->data['User']['first_name']);?>"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="UserLastName">Last name *</label>
+                                <input type="text" name="data[User][last_name]" maxlength="50" id="UserLastName" class="form-control" placeholder="Enter your First name" required="required" value="<?php echo($this->request->data['User']['last_name']);?>"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Tagline">Tagline</label>
+                                <input type="text" name="data[User][tagline]" maxlength="200" id="Tagline" class="form-control" placeholder="Enter your Tagline"  value="<?php echo($this->request->data['User']['tagline']);?>"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Location">Location *</label>
+                                <input type="text" name="data[User][location]" maxlength="200" id="Location" class="form-control" placeholder="Enter your Location" value="<?php echo($this->request->data['User']['location']);?>" required="required"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="zipcode">Zipcode *</label>
+                                <input type="text" name="data[User][zipcode]" maxlength="200" id="zipcode" class="form-control" placeholder="Enter your Zipcode" value="<?php echo($this->request->data['User']['zipcode']);?>" required="required"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="UserEmail">Email *</label>
+                                <input type="email" readonly="readonly" class="form-control" required="required" id="UserEmail" placeholder="Email" value="<?php echo($this->request->data['User']['email']);?>">
+                            </div>
+                            <div class="form-group col-md-6 birthday">
+                                <label for="UserBirthday">Birthday * </label>
+                                <input type="text" name="data[User][birthday]" maxlength="100" id="UserBirthday" class="form-control" placeholder="YYYY-mm-dd" value="<?php echo($this->request->data['User']['birthday']!='0000-00-00'?$this->request->data['User']['birthday']:'');?>" required="required" autocomplete="off"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ABN">Tax Number</label>
+                                <input type="text" value="<?php echo($this->request->data['User']['abn']);?>" name="data[User][abn]" class="form-control" id="ABN" placeholder="Tax Number">
+                            </div>
+                            <!--<div class="form-group col-md-6">
+                                <label for="paypal_email">Paypal Email *</label>
+                                <input type="email" value="<?php echo($this->request->data['User']['paypal_email']);?>" name="data[User][paypal_email]" required="required" class="form-control" id="paypal_email" placeholder="Paypal Email">
+                            </div>-->
+                            <div class="form-group col-md-6">
+                                <label for="mobile_no">Mobile Number </label>
+                                <input class="form-control" id="mobile_no" type="text" name="data[User][phone_no]" value="<?php echo($this->request->data['User']['phone_no']);?>" placeholder="Mobile Number">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="user_name">User name *</label>
+                                <input class="form-control" id="user_name" type="text" name="data[User][username]" value="<?php echo($this->request->data['User']['username']);?>" required="required" placeholder="">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="UserAbout">Describe yourself  </label>
+                                <textarea name="data[User][about]" id="UserAbout" class="form-control"><?php echo($this->request->data['User']['about']);?></textarea>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="radio">
+                                  <label>
+                                      <input type="checkbox" class="ptype" name="Post_type" <?php echo(($this->request->data['User']['user_type']==1 || $this->request->data['User']['user_type']==3)?'checked':'');?> value="Post" />&nbsp;Post Errand
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                      <input type="checkbox" class="ptype" name="Run_type" <?php echo(($this->request->data['User']['user_type']==2 || $this->request->data['User']['user_type']==3)?'checked':'');?> value="Run" />&nbsp;Run Errand
+                                  </label>
+                                </div>
+                                <div style="color: #FC8675; display: none;" id="ErrorMsg"><p>Please select an errand options.</p></div>
+                            </div>
+                            <div class="form-group col-md-12">
+                               <button type="submit">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>  
+/*$('.right_dash_board').enscroll({
+    showOnHover: false,
+    verticalTrackClass: 'track3',
+    verticalHandleClass: 'handle3'
+});*/
+//$.noConflict();
+$( document ).ready(function( $ ) {
+    //alert('hi');
+    $( "#UserBirthday" ).datepicker({ 
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:-10"
+    });
+    initialize_running_task();
+});
+</script>
+
+<script type="text/javascript">
+function initialize_running_task() {
+    var defaultBounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(7.623887, 68.994141),
+    new google.maps.LatLng(37.020098, 97.470703));
+
+    var input1 = document.getElementById('Location');
+    var options = {
+        bounds: defaultBounds,
+        types: ['geocode'],
+    };
+    autocomplete1 = new google.maps.places.Autocomplete(input1, options);
+}
+</script>
+       
+<style>  
+
+.progress-bar-success {
+    background-color: #349200 !important;
+    background-image: linear-gradient(to bottom, #349200 0%, #43B500 100%);
+    background-repeat: repeat-x;
+    color: #ffffff !important;
+    text-align: center;
+
+}
+
+.choose_file{
+    position:relative;
+    display:inline-block;    
+	/*border-radius:8px;*/
+    border:#cccccc solid 1px;
+    padding: 5px 6px 5px 8px;
+    font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
+    color: #7f7f7f;
+    margin-top: 2px;
+	background:white;
+        width: 100%;
+}
+.choose_file input[type="file"]{
+    -webkit-appearance:none; 
+    position:absolute;
+    top:0; left:0;
+    opacity:0; 
+}
+
+.edit_profile label {font-weight: bold;}
+</style>     
+<?php
+//Only display the javacript if an image has been uploaded
+if($per_profile_img!='' && file_exists($uploadImgPath . '/' . $per_profile_img)){ 
+        
+    $img_path=$uploadImgPath . '/' . $per_profile_img;
+    $imgdetail=getimagesize($img_path);  
+    $current_large_image_width = $imgdetail[0];
+    $current_large_image_height =$imgdetail[1];
+?>
+        
+<script type="text/javascript">
+function validate(){
+    var len = $(".ptype:checked").length;
+    if(len>0){
+        $('#ErrorMsg').hide();
+        return true;
+    }else{
+        //$('.ptype').css({border-color:''});
+        $('#ErrorMsg').show();
+        alert('Please select an errand options');
+        return false;
+    }
+}    
+    
+function preview(img, selection) { 
+        //alert(selection.width);
+	var scaleX = <?php echo $thumb_width;?> / selection.width; 
+	var scaleY = <?php echo $thumb_height;?> / selection.height; 
+	
+	$('#PreviewImgThumb').css({ 
+        //$('#PreviewImg').css({     
+        	width: Math.round(scaleX * <?php echo $current_large_image_width;?>) + 'px', 
+		height: Math.round(scaleY * <?php echo $current_large_image_height;?>) + 'px',
+                //width: 100 + 'px', 
+		//height: 100 + 'px',
+		marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px', 
+		marginTop: '-' + Math.round(scaleY * selection.y1) + 'px' 
+	});
+	$('#x1').val(selection.x1);
+	$('#y1').val(selection.y1);
+	$('#x2').val(selection.x2);
+	$('#y2').val(selection.y2);
+	$('#w').val(selection.width);
+	$('#h').val(selection.height);
+} 
+
+function save_change_validate(){
+    var x1 = $('#x1').val();
+    var y1 = $('#y1').val();
+    var x2 = $('#x2').val();
+    var y2 = $('#y2').val();
+    var w = $('#w').val();
+    var h = $('#h').val();
+    if(x1=="" || y1=="" || x2=="" || y2=="" || w=="" || h==""){
+            alert("You must make a selection first");
+            return false;
+    }else{
+            return true;
+    }
+}
+
+$(window).load(function () { 
+	$('#thumbnail').imgAreaSelect({ aspectRatio: '1:<?php echo $thumb_height/$thumb_width;?>', onSelectChange: preview }); 
+});
+
+</script>
+<?php }?>

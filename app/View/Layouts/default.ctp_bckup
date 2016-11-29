@@ -1,0 +1,1822 @@
+<?php
+
+//pr($notification);
+//echo $userpopdetails['UserImage'][0]['originalpath'];
+/**
+ *
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       app.View.Layouts
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+$userid = $this->Session->read('user_id');
+$offset=$this->Session->read('timezone');
+$cakeDescription = __d('cake_dev', 'Ladder');
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php echo $this->Html->charset(); ?>
+        <?php
+        echo $this->Html->meta('icon');
+
+        #echo $this->Html->css('cake.generic');
+        echo $this->Html->css('bootstrap');
+        echo $this->Html->css('bootstrap-theme');
+
+        echo $this->Html->script('jquery.min');
+        echo $this->Html->script('bootstrap.min');
+        ?>
+        <link href="<?php echo $this->webroot; ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo $this->webroot; ?>/css/jquery.bxslider.css" rel="stylesheet" type="text/css">
+        <!-- Custom Fonts -->
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+         <script>
+    $(document).ready(function(){
+   
+        setTimeout(function() {
+             $('.message').fadeOut('slow');
+             $('.success').fadeOut('slow');
+        }, 3000);
+    });
+
+</script>
+
+        <script>
+            $(document).ready(function () {
+                $('#list').on('click', function () {
+                    $('.product-list').removeClass('grid').addClass('list');
+                });
+                $('#grid').on('click', function () {
+                    $('.product-list').removeClass('list').addClass('grid');
+                });
+            });
+        </script>
+
+ <?php
+if ($this->params['controller']=='posts' && $this->params['action']=='offer_details') {
+    
+    $link =Configure::read('SITE_URL').'posts/offer_details/'.$posts['Post']['id'];
+    $shareName = 'Niwi - '.$posts['Post']['post_title']; 
+    $uploadFolder = "/img/post_img/";
+    $uploadPath = WWW_ROOT . $uploadFolder;
+    $imageName =$posts['PostImage']['0']['originalpath'];
+    if(file_exists($uploadPath . '/' . $imageName) && $imageName!='')
+    {
+         $image = Configure::read('SITE_URL').'/img/post_img/'.$posts['PostImage']['0']['originalpath'];
+          
+     }
+     else{
+         $image = Configure::read('SITE_URL').'/images/noimage.png';
+     }
+
+
+?>
+<meta name="og:type" content="website" /> 
+<meta name="og:image" content="<?php echo $image;?>"/>
+<meta name="og:title" content="<?php echo $shareName;?>" />
+<meta name="og:description" content="<?php echo str_replace('%0D%0A',' ',str_replace('+',' ',$posts['Post']['post_description']));?>" />
+<meta name="og:url" content="<?php echo $link;?>"/>
+<meta name="og:like" content="<?php echo $link;?>"/>
+
+<meta name="description" content="<?php echo $posts['Post']['post_description']; ?>"/>
+<meta name="title" content="<?php echo $shareName;?>"/>
+<meta name="keywords" content="<?php echo $posts['Post']['post_description']; ?>"/>
+<?php
+}
+?>
+
+
+<?php
+if ($this->params['controller']=='posts' && $this->params['action']=='post_details') {
+    
+    $link =Configure::read('SITE_URL').'posts/post_details/'.$posts['Post']['id'];
+    $shareName = 'Niwi - '.$posts['Post']['post_title']; 
+    $uploadFolder = "/img/post_img/";
+    $uploadPath = WWW_ROOT . $uploadFolder;
+    $imageName =$posts['PostImage']['0']['originalpath'];
+    if(file_exists($uploadPath . '/' . $imageName) && $imageName!='')
+    {
+         $image = Configure::read('SITE_URL').'/img/post_img/'.$posts['PostImage']['0']['originalpath'];
+          
+     }
+     else{
+         $image = Configure::read('SITE_URL').'/images/noimage.png';
+     }
+
+
+?>
+<meta name="og:type" content="website" /> 
+<meta name="og:image" content="<?php echo $image;?>"/>
+<meta name="og:title" content="<?php echo $shareName;?>" />
+<meta name="og:description" content="<?php echo str_replace('%0D%0A',' ',str_replace('+',' ',$posts['Post']['post_description']));?>" />
+<meta name="og:url" content="<?php echo $link;?>"/>
+<meta name="og:like" content="<?php echo $link;?>"/>
+
+<meta name="description" content="<?php echo $posts['Post']['post_description']; ?>"/>
+<meta name="title" content="<?php echo $shareName;?>"/>
+<meta name="keywords" content="<?php echo $posts['Post']['post_description']; ?>"/>
+<?php
+}
+?>       
+        
+
+        <style>
+            input[type='file'] { color: transparent; }
+            .preview{width:200px;border:solid 1px #dedede;padding:10px;}
+           #preview{color:#cc0000;font-size:12px}
+        </style>
+
+    </head>
+    <body>
+    	<div class="modal fade" id="modal_success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog log-holder">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        
+                    </div>
+                    <div class="modal-body sucess_sec" style="padding-top:0">
+                        <div class="sucs_img">
+                        	<img src="<?php //echo $this->webroot; ?>/images/sucses.svg" alt="">
+                        </div>
+                        <p>Your post will be reviewed andshould be live soon. Check back in.</p>
+                        <ul class="social_links" id="social_links_post_share">
+<!--							<li class="fb">
+								<a class="fa fa-facebook" href=""></a>
+							</li>
+							<li class="gpls">
+								<a class="fa fa-google-plus" href=""></a>
+							</li>
+							<li class="twit">
+								<a class="fa fa-twitter" href=""></a>
+							</li>-->
+						</ul>
+						<span>Share this post on social media to get more results!</span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.Login modal -->
+        
+        <div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog log-holder">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Log In</h4>
+                        <h4 style="text-align: center;color: #c1c1c6;" id="postWithoutLogin"></h4>
+                        <h4 class="modal-title-info">Login or Create a new account to keep exploring</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="loginuser" method="post" action="<?php echo $this->webroot; ?>users/userlogin">
+                            <div class="form-group">
+                                <button type="button" class="paypal-btn">
+                                    <img src="<?php echo $this->webroot; ?>/images/paypal.png" alt="">
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="Facebook-btn">
+                                    <img src="<?php echo $this->webroot; ?>/images/facebook.png" alt="">
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="button" class="google-btn">
+                                            <img src="<?php echo $this->webroot; ?>/images/google-plus.png" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="button" class="twitter-btn">
+                                            <img src="<?php echo $this->webroot; ?>/images/twitter.png" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="or"><h4>Or</h4></div>
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <input type="email" name="data[User][email]" id="email" class="form-control" placeholder="Email Adress" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="data[User][password]" id="password" class="form-control" placeholder="Password" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Log In" class="btn btn-primary btn-block"/>
+                            </div>
+                            <p class="sign-now">“New to NIWI? <a href="javascript:void(0)" id="signupclose">Sign up now</a> </p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="intrst">Interested in Selling? <a href="javascript:void(0)">Get started now!</a></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.Login modal -->
+        <div class="modal fade" id="Register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog log-holder">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Join Niwi</h4>
+                        <h4 class="modal-title-info">Niwi is the place to discover and buy amazing things</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="userregister" method="post" action="<?php echo $this->webroot; ?>users/userregister">
+                            <div class="form-group">
+                                <button type="button" class="paypal-btn">
+                                    <img src="<?php echo $this->webroot; ?>/images/paypal.png" alt="">
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="Facebook-btn">
+                                    <img src="<?php echo $this->webroot; ?>/images/facebook.png" alt="">
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="button" class="google-btn">
+                                            <img src="<?php echo $this->webroot; ?>/images/google-plus.png" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="button" class="twitter-btn">
+                                            <img src="<?php echo $this->webroot; ?>/images/twitter.png" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="or"><h4>Or</h4></div>
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <input type="email" name="data[User][email_address]" id="email" class="form-control" placeholder="Email Adress" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="password" name="data[User][user_pass]" class="form-control" placeholder="Password" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="data[User][fullname]" id="fullname" class="form-control" placeholder="Full Name" required="required"/>
+                            </div>
+                            <div class="form-group">
+<!--							<p class="text-center"><img src="<?php echo $this->webroot; ?>/images/robot.png" class="img-responsive" style="display: inline-block"></p>-->
+                                <div class="g-recaptcha" data-sitekey="6LeZYSETAAAAAM_sOQCjc8ghDWmBtuhLBu490WeB"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Join Now!" class="btn btn-primary btn-block"/>
+                            </div>
+                            <p class="sign-now">By signing up, you agree to our <a href="">terms of use</a>, <a href="">privacy policy</a>,and <a href="">cookie policy</a></p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="intrst">Interested in Selling? <a href="">Get started now!</a></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.Register modal -->
+
+
+<style>
+.ui-autocomplete{
+	z-index:9999999;
+}
+
+.pac-container{ z-index: 999999999;}
+</style>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+<script>
+      // This example displays an address form, using the autocomplete feature
+      // of the Google Places API to help users fill in the information.
+
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+      var placeSearch, autocomplete;
+      var CustomcomponentForm = {
+        postAddress: 'short_name',
+        //route: 'long_name',
+        postCity: 'long_name',
+        postState: 'short_name',
+        postCountry: 'long_name',
+        postZip_code: 'short_name'
+      };
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+      };
+
+      function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('postLocation')),
+            {types: ['geocode']});
+console.log('Add1');
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+      }
+
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+console.log(place);
+        for (var component in CustomcomponentForm) {
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+        console.log(componentForm);
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          
+         console.log(addressType+'|'+componentForm[addressType]); 
+          if (componentForm[addressType]) {
+          console.log('Add3');
+          //alert(document.getElementById('postZip_code').value);
+            var val = place.address_components[i][componentForm[addressType]];
+            //alert(addressType);
+            if(addressType=='street_number'){
+                document.getElementById('postAddress').value = val;
+            }else if(addressType=='route'){
+                document.getElementById('postAddress').value = document.getElementById('postAddress').value+val;
+            }else if(addressType=='locality'){
+                document.getElementById('postCity').value = val;
+            }else if(addressType=='administrative_area_level_1'){
+                document.getElementById('postState').value = val;
+            }else if(addressType=='country'){
+                document.getElementById('postCountry').value = val;
+            }else if(addressType=='postal_code'){
+                document.getElementById('postZip_code').value = val;
+            }
+            
+          }
+        }
+      }
+
+      // Bias the autocomplete object to the user's geographical location,
+      // as supplied by the browser's 'navigator.geolocation' object.
+      function geolocate() {
+console.log('Hi0');         
+          initAutocomplete();
+        /*if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }*/
+      }
+</script>
+
+<script>
+      var placeSearch, autocomplete;
+      var CustomcomponentForm = {
+        postAddressval: 'short_name',
+        //route: 'long_name',
+        postCityval: 'long_name',
+        postStateval: 'short_name',
+        postCountryval: 'long_name',
+        postZip_codeval: 'short_name'
+      };
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+      };
+
+      function initAutocomplete_edit() {
+      
+        autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('locationval')),
+            {types: ['geocode']});
+console.log('Hi');
+       
+        autocomplete.addListener('place_changed', fillInAddress_edit);
+      }
+
+      function fillInAddress_edit() {
+      
+        var place = autocomplete.getPlace();
+console.log('Hi2');
+        for (var component in CustomcomponentForm) {
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+          //alert(document.getElementById('postZip_codeval').value);
+            var val = place.address_components[i][componentForm[addressType]];
+            //alert(addressType);
+            if(addressType=='street_number'){
+                document.getElementById('postAddressval').value = val;
+            }else if(addressType=='route'){
+                document.getElementById('postAddressval').value = document.getElementById('postAddressval').value+val;
+            }else if(addressType=='locality'){
+                document.getElementById('postCityval').value = val;
+            }else if(addressType=='administrative_area_level_1'){
+                document.getElementById('postStateval').value = val;
+            }else if(addressType=='country'){
+                document.getElementById('postCountryval').value = val;
+            }else if(addressType=='postal_code'){
+                document.getElementById('postZip_codeval').value = val;
+            }
+            
+          }
+        }
+      }
+
+      function geolocate_edit() {
+console.log('Hi0');         
+          initAutocomplete_edit();
+        
+      }
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    google.load('search', '1');
+    google.setOnLoadCallback(OnLoad);
+    var search;
+
+    //i suggest instead of this to make keywords list so first to pick random keyword than to do search and pick random image
+    var keyword = 'mac pro';
+
+    function OnLoad()
+    {
+        search = new google.search.ImageSearch();
+
+        search.setSearchCompleteCallback(this, searchComplete, null);
+
+        search.execute(keyword);
+    }
+
+    function searchComplete()
+    {
+        console.log(search);
+        if (search.results && search.results.length > 0)
+        {
+            var rnd = Math.floor(Math.random() * search.results.length);
+
+            //you will probably use jQuery and something like: $('body').css('background-image', "url('" + search.results[rnd]['url'] + "')");
+            document.body.style.backgroundImage = "url('" + search.results[rnd]['url'] + "')";
+        }
+    }
+    </script>
+<script type="text/javascript">
+
+    var keyword = "mountains";
+
+    $(document).ready(function(){
+
+        $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+        {
+            tags: keyword,
+            tagmode: "any",
+            format: "json"
+        },
+        function(data) {
+          console.log(data);
+            var rnd = Math.floor(Math.random() * data.items.length);
+
+            var image_src = data.items[rnd]['media']['m'].replace("_m", "_b");
+
+            //$('body').css('background-image', "url('" + image_src + "')");
+
+        });
+
+    });
+    </script>
+
+
+        <!--########  ADD POST MODAL ######### -->
+        <div class="modal fade" id="AddPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog log-holder ad-post-step-holder">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Step <span id="stepNo">1</span></h4>
+                        <h4 class="modal-title-info">3 easy steps to post on Niwi</h4>
+                    </div>
+                    <ul class="nav nav-tabs step-tab" role="tablist">
+                        <li role="presentation" id="pli1" class="active"><a aria-controls="PostDtail" role="tab" data-toggle="tab">Post Details</a></li>
+                        <li role="presentation" id="pli2"><a aria-controls="AdPhto" role="tab" data-toggle="tab">Add a Photo</a></li>
+                        <li role="presentation" id="pli3"><a aria-controls="ConFrm" role="tab" data-toggle="tab">Confirm</a></li>
+                    </ul>
+                    <div class="modal-body">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" id="pdiv1" class="tab-pane fade in active" id="PostDtail">
+                                <form>
+                                <input type="hidden" value="" name="data[city]" id="postCity">
+                                <input type="hidden" value="" name="data[state]" id="postState">
+                                <input type="hidden" value="" name="data[address]" id="postAddress">
+                                <input type="hidden" value="" name="data[country]" id="postCountry">
+                                <input type="hidden" value="" name="data[zip_code]" id="postZip_code">
+                                    <div class="row">
+                                        <div class="col-sm-8 middle-div">
+                                            <div class="form-group">
+                                                <select name="data[category_id]" id="category_id" required="required" class="form-control" onchange="getsubcat_post()">
+											<option value="">--Select a Category (Required)--</option>
+											<option value="<?php echo $catgfirst['Category']['id']?>"><?php echo $catgfirst['Category']['category_name']?></option>
+											<?php if(isset($catg))
+											{
+											foreach($catg as $k=>$v)
+											{
+												?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
+											}
+										
+											}
+											?>
+									   </select>		
+                                                
+                                                <?php  //echo $this->Form->input('category_id',array('id'=> 'category_id', 'label'=>false,'required'=>'required','class'=>'form-control','options'=>$catg,'empty'=>'--Select a Category (Required)--','onchange'=>'getsubcat_post()')); ?>
+                                            </div>
+
+
+                                             <div class="form-group">
+                                                <select class="form-control" id="subcategory_id" name="subcategory_id">
+                                                    <option>--Select a SubCategory (Required)--</option>
+                                                    
+                          
+                                                
+                                                </select>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <!--<input type="text" class="form-control" placeholder="Title Description (Required)">-->
+                                                <?php echo $this->Form->input('post_title',array('id'=> 'post_title', 'required'=>'required','placeholder'=>'Title Description (Required)','class'=>'form-control','label'=>false)); ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <!--<input type="text" class="form-control" placeholder="Location">-->
+                                                <?php echo $this->Form->input('location',array('id'=> 'postLocation', 'required'=>'required','placeholder'=>'Location','class'=>'form-control','label'=>false,'onFocus'=>'geolocate()')); ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <!--<textarea rows="4" class="form-control" style="height: auto" placeholder="Product Description"></textarea>-->
+                                                <?php echo $this->Form->input('post_description', array('id'=> 'post_description', 'type' => 'textarea', 'style' => 'height: auto' ,'label'=>false, 'class'=>'form-control', 'placeholder'=>'Product Description',));?>
+                                                <small class="grey-text">150 characters max</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script> //var elem = $("#chars"); $("#pdesc").limiter(90, elem); </script>
+                                </form>
+                            </div>
+                            <div role="tabpanel" id="pdiv2" class="tab-pane" id="AdPhto">
+                                <input type="hidden" name="postId" id="postId" value="" >
+                                <div class="photo-adding-area">
+                                <style>
+                                    .preview{width:200px;border:solid 1px #dedede;padding:10px;}
+                                    #preview{color:#cc0000;font-size:12px}
+                                </style>
+                                    <ul class="phto-add">
+
+                                        <form id="imageform1" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximage/'>
+                                        <li>
+                                            <div id="preview1"><img src="<?php echo $this->webroot; ?>images/add-photo2.svg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="photoimg1" id="photoimg1" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="imageform2" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximage/'>
+                                        <li>
+                                            <div id="preview2"><img src="<?php echo $this->webroot; ?>images/add-photo2.svg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="photoimg2" id="photoimg2" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="imageform3" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximage/'>
+                                        <li>
+                                            <div id="preview3"><img src="<?php echo $this->webroot; ?>images/add-photo2.svg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="photoimg3" id="photoimg3" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="imageform4" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximage/'>
+                                        <li>
+                                            <div id="preview4"><img src="<?php echo $this->webroot; ?>images/add-photo2.svg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="photoimg4" id="photoimg4" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="imageform5" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximage/'>
+                                        <li>
+                                            <div id="preview5"><img src="<?php echo $this->webroot; ?>images/add-photo2.svg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="photoimg5" id="photoimg5" /></p>
+                                        </li>
+                                        </form>
+
+
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                    <h4>Suggested Images</h4>
+                                    <p><img src="<?php echo $this->webroot; ?>images/round-tick.png" alt=""></p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div role="tabpanel" id="pdiv3" class="tab-pane" id="ConFrm">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-sm-8 middle-div">
+                                            <div class="form-group">
+                                                <label>BUDGET</label>
+                                                <input type="text" name="budget" id="budget" class="form-control" placeholder="Enter $ Amount">
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 50px">
+                                                <div class="form-control">
+                                                    <div class="radio margin-top0">
+                                                        <label>
+                                                            <input type="radio" name="price_condition" id="price_condition" value="Fixed"> Fixed
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="price_condition" id="price_condition" value="Negotiable"> Negotiable
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="price_condition" id="price_condition" value="Trade"> Trade
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>PRODUCT CONDITION</label>
+                                                <div class="form-control">
+                                                    <div class="radio margin-top0">
+                                                        <label>
+                                                            <input type="radio" name="product_condition" id="product_condition" value="New"> New
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="product_condition" id="product_condition" value="Used"> Used
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <small class="grey-text" style="display: block; border-top:1px solid #e1e1e1; padding-top: 5px">By clicking 'Submit', you agree to abide by our listing rules and terms of use. You also agree to follow through on your listing regardless of the final bid amount. Users who are in violation of these terms may be suspended.</small>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-bordered" data-dismiss="modal" style="padding-right: 20px; padding-left:20px">Skip</button>
+                        <span id="postContinue"><button type="button" onclick="savePost('post1')" class="btn btn-primary">Continue</button></span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.Post modal -->
+        <!--########  ADD POST MODAL ######### -->
+
+        <!--########  Edit POST MODAL ######### -->
+        <div class="modal fade" id="EditPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog log-holder ad-post-step-holder">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit Post Step <span id="estepNo">1</span></h4>
+                        <h4 class="modal-title-info">3 easy steps to post on Niwi</h4>
+                    </div>
+                    <ul class="nav nav-tabs step-tab" role="tablist">
+                        <li id="epli1" role="presentation" class="active"><a href="#PostDtail" onclick="pDtail();" aria-controls="PostDtail" role="tab" data-toggle="tab">Post Details</a></li>
+                        <li id="epli2" role="presentation"><a href="#AdPhto" onclick="imgDtail();" aria-controls="AdPhto" role="tab" data-toggle="tab">Add a Photo</a></li>
+                        <li id="epli3" role="presentation"><a href="#ConFrm" onclick="budDetail();" aria-controls="ConFrm" role="tab" data-toggle="tab">Confirm</a></li>
+                    </ul>
+                    
+                    <div class="modal-body">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" id="epdiv1" class="tab-pane fade in active" id="PostDtail">
+                                <form>
+                                <input type="hidden" value="" name="data[city]" id="postCityval">
+                                <input type="hidden" value="" name="data[state]" id="postStateval">
+                                <input type="hidden" value="" name="data[address]" id="postAddressval">
+                                <input type="hidden" value="" name="data[country]" id="postCountryval">
+                                <input type="hidden" value="" name="data[zip_code]" id="postZip_codeval">
+                                    <div class="row">
+                                        <div class="col-sm-8 middle-div">
+                                            <input type="hidden" name="epostid100" id="epostid100" value="">
+                                            <!--<div class="form-group">
+                                               
+
+                                                <?php  echo $this->Form->input('category_id',array('id'=> 'category_idval', 'label'=>false,'required'=>'required','class'=>'form-control','options'=>$catg,'empty'=>'--Select a Category (Required)--','onchange'=>'getsubcat_post_edit()')); ?>
+
+                                            </div>-->
+
+                                            <div class="form-group">
+                                                <select name="data[category_id]" id="category_idval" required="required" class="form-control" onchange="getsubcat_post_edit()">
+                                            <option value="">--Select a Category (Required)--</option>
+                                            <option value="<?php echo $catgfirst['Category']['id']?>"><?php echo $catgfirst['Category']['category_name']?></option>
+                                            <?php if(isset($catg))
+                                            {
+                                            foreach($catg as $k=>$v)
+                                            {
+                                                ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
+                                            }
+                                        
+                                            }
+                                            ?>
+                                       </select>        
+                                                
+                                                <?php  //echo $this->Form->input('category_id',array('id'=> 'category_id', 'label'=>false,'required'=>'required','class'=>'form-control','options'=>$catg,'empty'=>'--Select a Category (Required)--','onchange'=>'getsubcat_post()')); ?>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <select class="form-control" required="required" id="subcategory_idval">
+                                                    <option>--Select a SubCategory (Required)--</option>
+                                                    
+                          
+                                                
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <!--<input type="text" class="form-control" placeholder="Title Description (Required)">-->
+                                                <?php echo $this->Form->input('post_title',array('id'=> 'post_titleval', 'required'=>'required','placeholder'=>'Title Description (Required)','class'=>'form-control','label'=>false)); ?>
+                                            </div>
+
+                                            <div class="form-group">
+                                              
+                                                <?php echo $this->Form->input('location',array('id'=> 'locationval', 'required'=>'required','placeholder'=>'Location','class'=>'form-control','label'=>false,'onFocus'=>'geolocate_edit()')); ?>
+                                            </div>
+                                            <!--<div class="form-group">
+                                               
+                                                <?php //echo $this->Form->input('location',array('id'=> 'locationval', 'required'=>'required','placeholder'=>'Location','class'=>'form-control','label'=>false)); ?>
+                                            </div>-->
+                                            <div class="form-group">
+                                                <!--<textarea rows="4" class="form-control" style="height: auto" placeholder="Product Description"></textarea>-->
+                                                <?php echo $this->Form->input('post_description', array('id'=> 'post_descriptionval', 'type' => 'textarea', 'style' => 'height: auto' ,'label'=>false, 'class'=>'form-control', 'placeholder'=>'Product Description','maxlength'=>'150'));?> 
+                                                <small class="grey-text">150 characters max</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script> //var elem = $("#chars"); $("#pdesc").limiter(90, elem); </script>
+                                </form>
+                            </div>
+                            <div role="tabpanel" id="epdiv2" class="tab-pane" id="AdPhto">
+                                <div class="photo-adding-area">
+                                    <input type="hidden" name="epostId" id="epostIds" value="" >
+                                    <ul class="phto-add">
+										
+										<form id="existimg">
+											
+										</form>
+                                        <form id="eimageform1" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximageedit/'>
+                                        <li>
+                                            <div id="epreview1"><img src="<?php echo $this->webroot; ?>images/add-photo2.jpg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="ephotoimg1" id="ephotoimg1" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="eimageform2" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximageedit/'>
+                                        <li>
+                                            <div id="epreview2"><img src="<?php echo $this->webroot; ?>images/add-photo2.jpg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="ephotoimg2" id="ephotoimg2" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="eimageform3" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximageedit/'>
+                                        <li>
+                                            <div id="epreview3"><img src="<?php echo $this->webroot; ?>images/add-photo2.jpg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="ephotoimg3" id="ephotoimg3" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="eimageform4" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximageedit/'>
+                                        <li>
+                                            <div id="epreview4"><img src="<?php echo $this->webroot; ?>images/add-photo2.jpg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="ephotoimg4" id="ephotoimg4" /></p>
+                                        </li>
+                                        </form>
+
+
+                                        <form id="eimageform5" method="post" enctype="multipart/form-data" action='<?=$this->Html->url('/')?>posts/ajaximageedit/'>
+                                        <li>
+                                            <div id="epreview5"><img src="<?php echo $this->webroot; ?>images/add-photo2.jpg" height="100px" width="100px" alt=""></div>
+                                            <p><input type="file" name="ephotoimg5" id="ephotoimg5" /></p>
+                                        </li>
+                                        </form>
+
+
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                    <h4>Suggested Images</h4>
+                                    <p><img src="images/round-tick.png" alt=""></p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div role="tabpanel" id="epdiv3" class="tab-pane" id="ConFrm">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-sm-8 middle-div">
+                                            <div class="form-group">
+                                                <label>BUDGET</label>
+                                                <input type="text" name="budget" id="budgetval" class="form-control" placeholder="Enter $ Amount">
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 50px">
+                                                <div class="form-control">
+                                                    <div class="radio margin-top0">
+                                                        <label>
+                                                            <input type="radio" name="price_conditionval" id="price_conditionval" value="Fixed"> Fixed
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="price_conditionval" id="price_conditionval" value="Negotiable"> Negotiable
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="price_conditionval" id="price_conditionval" value="Trade"> Trade
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>PRODUCT CONDITION</label>
+                                                <div class="form-control">
+                                                    <div class="radio margin-top0">
+                                                        <label>
+                                                            <input type="radio" name="product_conditionval" id="product_conditionval" value="New"> New
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="product_conditionval" id="product_conditionval" value="Used"> Used
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <small class="grey-text" style="display: block; border-top:1px solid #e1e1e1; padding-top: 5px">By clicking 'Submit', you agree to abide by our listing rules and terms of use. You also agree to follow through on your listing regardless of the final bid amount. Users who are in violation of these terms may be suspended.</small>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-bordered" data-dismiss="modal" style="padding-right: 20px; padding-left:20px">Skip</button>
+                        <span id="editpostContinue"><button type="button" onclick="editpostContinue('post1')" class="btn btn-primary">Continue</button></span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.Post modal -->
+        <!--########  Edit POST MODAL ######### -->
+
+
+        <nav class="navbar navbar-default">
+            <?php if ($userid == ''){?>
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?php echo $this->webroot; ?>"><img src="<?php echo $this->webroot; ?>/images/logo.svg" alt="" style="width:89px;height:48px"/></a>
+                </div>
+                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><button class="btn btn-bordered app-btn get_app"><span>Get the App!</span> <i></i></button></li>
+                        <li><button class="btn btn-primary log-btn" data-toggle="modal" data-target="#Login">Login</button></li>
+                        <li><button class="btn btn-primary log-btn camera" onclick="setLoginRequest()" >Add a post</button></li>
+                        <!--<li><button class="btn btn-primary log-btn" data-toggle="modal" data-target="#AddPost">Add a post <i><img src="<?php echo $this->webroot; ?>/images/camera.png" alt=""></i></button></li>-->
+                    </ul>
+                </div>
+            </div><!-- /.container-->
+            <?php } ?>
+            <?php if (isset($userid) && $userid != '') {?>
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?php echo $this->webroot; ?>"><img src="<?php echo $this->webroot; ?>images/logo.png" alt="" /></a>
+                </div>
+                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-left after-login-navbar">
+                        <!--<li><button class="btn btn-primary log-btn" onclick="editPostModalOpen(16)" >Edit Post </button></li>-->
+                        <li><button class="btn btn-primary log-btn camera" data-toggle="modal" data-target="#AddPost">Add a post</button></li>
+                        <li class="comment_holder">
+                            <a href="javascript:void(0);" class="comment-icon"><i></i>
+                                <?php if($unread_comment>0) { ?><span><?php echo $unread_comment; ?></span><?php } ?>
+                            </a>
+                            <div class="content-tabs comment_tab" style="display:none;">
+                                <div class="content-tab-tip"></div>
+                                <ul class="sub-account-menu">
+                                    <li><h4>Notifications <!--<span>Mute</span>--></h4></li>
+                                    <li>
+                                        <ul class="notifiul">
+                                            <?php foreach($comment_chats as $chat)
+                                            { ?>
+                                            <li class="<?php echo (empty($chat['Chat']['is_read'])?'new':'').$chat['Chat']['is_read']; ?>" onclick="window.location='<?php echo $this->webroot.'posts/message_chat/'.$chat['post']['Post']['post_id'].'/'.$chat['post']['Post']['id']; ?>'" style="cursor:pointer">
+                                                <div class="nitifi_user">
+                                                    <img alt="" src="<?php
+                                                    if(!empty($chat['sender']['UserImage']))
+                                                    {
+                                                        echo $this->webroot.'user_images/'.$chat['sender']['UserImage']['0']['originalpath'];
+                                                    }
+                                                    else
+                                                    {
+                                                        echo $this->webroot.'user_images/default.png';
+                                                    }
+                                                    ?>">
+                                                </div>
+                                                <aside>
+                                                    <p><?php echo $chat['sender']['User']['first_name'].' '.$chat['sender']['User']['last_name']; ?></p>
+                                                    <span><?php echo ($chat['Chat']['message']); ?>
+                                                    </span>
+                                                </aside>
+<!--                                                <div class="nitifi_img">
+                                                    <img alt="" src="/team4/niwi//img/post_img/1465984315ed-Chicken-1240.jpg">
+                                                </div>-->
+                                            </li>
+                                            <?php
+                                            } ?>
+                                            
+                                        </ul>
+                                    </li>
+                                    <li class="seemore"><a href="">See all</a></li>
+                                </ul>
+                            </div>
+                                    
+                        </li>
+                        <li class="noti_holder">
+                            <a href="" class="notifi-icon">
+                                <i></i>
+                             	 <?php
+                                if($notification_count>0) {
+                                ?>
+                                <span><?php echo $notification_count;?></span>
+                                <?php
+                            }
+                                ?>
+                            </a>
+                            <?php
+                                if($notification_count>0) {
+                                ?>
+                            <div class="content-tabs noti_tab" style="display:none;">
+                                <div class="content-tab-tip"></div>
+                                <ul class="sub-account-menu">
+                                    <li><h4>Notifications <span>Mute</span></h4></li>
+                                    <li>
+                                        <ul class="notifiul">
+                                        <?php
+                                        foreach($notification as $notify)
+                                        {
+                                        ?>
+                                        <?php
+                                        if($notify['OfferNotification']['is_read']==0)
+                                        {
+                                        ?>
+                                            <li class="new">
+                                            <?php
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                            <li class="">
+                                            <?php
+                                            }
+                                            ?>
+                                                <div class="nitifi_user">
+                                                    <!--<img src="http://107.170.152.166/team4/niwi/user_images/57503e607aa70.jpg" alt="" />-->
+                                                     <?php
+                                                        $user_img_url = $this->requestAction('/posts/user_image/'.base64_encode($notify['OfferNotification']['from_id']));
+                                                        
+                                                        if(file_exists(WWW_ROOT.'user_images/'.$user_img_url))
+                                                        {
+                                                        ?>
+                                                     <img src="<?php echo $this->webroot;?>user_images/<?php echo $this->requestAction('/posts/user_image/'.base64_encode($notify['OfferNotification']['from_id']));?>" alt="">
+                                                      <?php
+                                                         }
+                                                         else
+                                                         {
+                                                        ?>
+                                                         <img src="<?php echo $this->webroot;?>user_images/default.png" alt="">
+                                                         <?php
+                                                          }
+                                                         ?>
+                                                </div>
+                                                <aside>
+                                                    <p><?php echo $notify['OfferNotification']['message'];?> on <?php
+                                                    $gmtTimezone = new DateTimeZone('GMT');
+                                                    $myDateTime = new DateTime($notify['Post']['post_date'], $gmtTimezone);
+
+                                                
+                                                 echo ' '.date("l jS F \, Y",strtotime($notify['Post']['post_date']));
+                                                 ?></p>
+                                                 <!--<p>Link : <a href="<?php echo $notify['OfferNotification']['link'];?>" target="_blank" style="padding: 0px 0px; font-size: 12px;"><?php echo $notify['OfferNotification']['link'];?></p>-->
+                                                    <span><b class="sky"><?php if($notify['OfferNotification']['type']=='offer') {?>I Have It<?php } ?></b> 
+                                                    Just now
+                                                    </span>
+                                                </aside>
+                                                <div class="nitifi_img">
+                                                    <!--<img src="http://107.170.152.166/team4/niwi//img/post_img/574d942879185.jpg" alt="" />-->
+                                                     <?php
+                                                        $offer_img_url = $this->requestAction('/posts/offer_image/'.base64_encode($notify['OfferNotification']['offer_id']));
+                                                        
+                                                        if(file_exists(WWW_ROOT.'/img/post_img/'.$offer_img_url))
+                                                        {
+                                                        ?>
+
+                                                       <img src="<?php echo $this->webroot;?>/img/post_img/<?php echo $this->requestAction('/posts/offer_image/'.base64_encode($notify['OfferNotification']['offer_id']));?>" alt="">
+
+                                                        <?php
+                                                         }
+                                                         else
+                                                         {
+                                                        ?>
+                                                         <img src="<?php echo $this->webroot;?>images/noimage.png" alt="">
+                                                         <?php
+                                                          }
+                                                         ?>
+                   
+                                                </div>
+                                            </li>
+                                            <?php
+                                            }
+                                            ?>
+                                            <!--<li>
+                                                <div class="nitifi_user">
+                                                    <img src="http://107.170.152.166/team4/niwi/user_images/57503e607aa70.jpg" alt="" />
+                                                </div>
+                                                <aside>
+                                                    <p>on Saturday.</p>
+                                                    <span><b class="pink">MarketPlace</b> 15 hours ago</span>
+                                                </aside>
+                                                <div class="nitifi_img">
+                                                    <img src="http://107.170.152.166/team4/niwi//img/post_img/574d942879185.jpg" alt="" />
+                                                </div>
+                                            </li>-->
+                                            <!--<li>
+                                                <div class="nitifi_user">
+                                                    <img src="http://107.170.152.166/team4/niwi/user_images/57503e607aa70.jpg" alt="" />
+                                                </div>
+                                                <aside>
+                                                    <p><span>Diego Sabogal has</span> the product you are looking <span>for “Macbook Pro 17”</span> on Saturday.</p>
+                                                    <span><i class="fa fa-heart"></i> 18 hours ago</span>
+                                                </aside>
+                                                <div class="nitifi_img">
+                                                    <img src="http://107.170.152.166/team4/niwi//img/post_img/574d942879185.jpg" alt="" />
+                                                </div>
+                                            </li>-->
+                                        </ul>
+                                    <li>
+                                    <li class="seemore"><a href="">See all</a></li>
+                                </ul>
+                            </div>
+                            <?php
+                            }
+                            ?>
+                        </li>
+                    </ul>
+                    <div class="user-sec" >
+                        <a href="" class="main-user" >
+                            <div class="round-image"><?php if ($userpopdetailsapp['UserImage'][0]['originalpath'] != '') { ?><img src="<?php echo $this->webroot; ?>user_images/<?php echo $userpopdetailsapp['UserImage'][0]['originalpath']; ?>" alt=""><?php } else { ?><img src="<?php echo $this->webroot; ?>user_images/default.png" alt=""><?php } ?></div>
+                            <span><?php echo ucwords($userpopdetailsapp['User']['first_name']); ?></span>
+                        </a>
+                        <div class="content-tab" style="display:none;">
+                            <div class="content-tab-tip"></div>
+                            <ul class="sub-account-menu">
+                               <li><h4><?php echo ucwords($userpopdetailsapp['User']['first_name'] . ' ' . $userpopdetailsapp['User']['last_name']); ?></h4></li>
+                                <li>
+                                    <div class="user-detill">
+                                        <div class="left-side"><?php if ($userpopdetailsapp['UserImage'][0]['originalpath'] != '') { ?><img src="<?php echo $this->webroot; ?>user_images/<?php echo $userpopdetailsapp['UserImage'][0]['originalpath']; ?>" alt=""><?php } else { ?><img src="<?php echo $this->webroot; ?>user_images/default.png" alt=""><?php } ?></div>
+                                        <div class="right-side">
+                                            <b><?php echo ucwords($userpopdetailsapp['User']['first_name'] . ' ' . $userpopdetailsapp['User']['last_name']); ?></b>
+                                            <p class="grey-user"><i class=""><img src="<?php echo $this->webroot; ?>images/grey-location.png" alt=""></i><?php if ($userpopdetailsapp['User']['status'] == 1) { ?>Verified User<?php } ?></p>
+                                            <a href="<?php echo $this->webroot; ?>users/edit_profile/<?php echo $userpopdetailsapp['User']['id']?>" class="btn btn-primary">View My Profile</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php
+
+                                $name_def=ucwords($userpopdetailsapp['User']['first_name']).' '.ucwords($userpopdetailsapp['User']['last_name']);
+                                $expname_def = explode(" ", $name_def);
+                                $usersnames=ucwords($userpopdetailsapp['User']['first_name']).' '.$expname_def[1][0];
+
+                                ?>
+                                <li class="menu_dash"><a href="<?php echo $this->webroot;?>users/dashboard/<?php echo $usersnames.'/'.base64_encode($userpopdetailsapp['User']['id']);?>">Dashboard</a></li>
+                                <li class="menu_dash"><a href="">Invite Friends</a></li>
+                                <li class="menu_dash"><a href="">Verify Your Account</a></li>
+                                <li class="menu_dash"><a href="">MarketPlace</a></li>
+                                <li class="menu_dash"><a href="">History</a></li>
+                                <li class="menu_dash"><a href="">Settings</a></li>
+                                <li class="menu_dash"><a href="<?php echo $this->webroot; ?>users/userlogout">Log Out</a></li>
+                                <li class="seemore"><a href="">See more options</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-->
+            <?php } ?>
+        </nav>
+                  <?php echo '<center>'.$this->Session->flash().'</center>'; ?> 
+        <?php if($this->params['action']!='edit_profile' && $this->params['action']!='post_listing' && $this->params['action']!='list_post' && $this->params['action']!='dashboard' && $this->params['action']!='post_details' && $this->params['action']!='favorites' && $this->params['action']!='offer_details' && $this->params['action']!='message_chat')
+{ ?>
+        <section class="banner">
+            <div class="container">
+                <h1>You need it?  Find it here!</h1>
+                <form name="searchfrm" method="post" action="<?php echo $this->webroot;?>">
+
+                <div class="search-holder">
+                    <div class="left-holder">
+                        <div class="part1">
+                            <input type="text" name="data[title]" placeholder="Search"/>
+                        </div>
+                        <div class="part2">
+                            <input type="text" name="data[location]" placeholder="Location"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" name="search_submit" type="submit">Go</button>
+                </div>
+            </form>
+                <div class="clearfix"></div>
+                <!--<div class="mouse-icon"></div>-->
+            </div>
+        </section>
+        <?php } ?>
+         <?php  if($this->params['action']!='dashboard' && $this->params['action']!='favorites' && $this->params['action']!='post_details' && $this->params['action']!='offer_details' && $this->params['action']!='message_chat')
+        {
+
+                if($this->params['action']=='edit_profile' ||  $this->params['action']=='post_listing' || $this->params['action']=='list_post')
+                { ?>
+            <section class="home-wrapper" style="margin-top: 0px;">
+        <?php } else { ?>
+                <section class="home-wrapper">
+        <?php } ?>
+                <div class="container">
+                    <div class="row">
+                        <?php
+            }
+                ?>
+                    <?php echo $this->fetch('content'); ?>
+                    </div>
+                </div>
+            </section>
+            <footer>
+                <div class="footer_top">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="footer_logo">
+                                    <img src="<?php echo $this->webroot; ?>/images/logo-bw.svg" alt="" class="img-responsive" style="width:93px;height:50px">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="footer-links">
+                                    <li><a href="">About Niwi</a></li>
+                                    <li><a href="">Blog</a></li>
+                                    <li><a href="">Mobile App</a></li>
+                                    <li><a href="">Help & Contact</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="social">
+                                    <li><a href="" class="fa fa-facebook-official"></a></li>
+                                    <li><a href="" class="fa fa-twitter"></a></li>
+                                    <li><a href="" class="fa fa-google-plus-square"></a></li>
+                                    <li><a href="" class="fa fa-instagram"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    <!--<img src="<?php echo $this->webroot; ?>/images/logo_footer.png" alt="" />-->
+                    </div>
+                </div>
+                <div class="footer_middle">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12" style="margin-bottom: 9px; font-size: 17px;">Coming Soon</div>
+                            <div class="col-lg-12">
+                                <p>
+                                    <span style="padding-right:12px"><img src="<?php echo $this->webroot; ?>/images/app-store.svg" alt="" style="width:131px;height:44px"></span>
+                                    <span style="padding-left:12px"><img src="<?php echo $this->webroot; ?>/images/google-play.svg" alt="" style="width:131px;height:44px"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer_bootom">
+                    <div class="container">
+                        <div class="row">
+                            <p class="copyright">© <?php echo date('Y'); ?> Niwi, LLC All Rights reserved. Niwi <a href="">Terms & Conditions,</a>  <a href="">Coockies Policy,</a> and <a href="">Privacy Policy</a></p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <script>
+            $('#signupclose').click(function (e) {
+                e.preventDefault();
+
+                $('#Login')
+                        .modal('hide')
+                        .on('hidden.bs.modal', function (e) {
+                            $('#Register').modal('show');
+
+                            $(this).off('hidden.bs.modal'); // Remove the 'on' event binding
+                        });
+
+            });
+            </script>
+            <?php echo $this->Html->script('jquery.form'); ?>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.main-user').click(function () {
+                        $('.content-tab').slideToggle('fast');
+                        return false;
+                    });
+                    $('.noti_holder').click(function () {
+                      //console.log('hi');
+                        $('.comment_tab').hide();
+                        //$(this).parent().find('.content-tabs').slideToggle('fast');
+                        $('.noti_tab').slideToggle('fast');
+                        return false;
+                    });
+                    $('.comment_holder').click(function () {
+                      //console.log('hi');
+                        $('.noti_tab').hide();
+                        //$(this).parent().find('.content-tabs').slideToggle('fast');
+                        $('.comment_tab').slideToggle('fast');
+                        return false;
+                    });
+					
+                    $('#ephotoimg1').on('change', function () {
+                       $("#epreview1").html('');
+                       $("#epreview1").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#eimageform1").ajaxForm({
+                           target: '#epreview1'
+                       }).submit();
+                   });
+
+                    $('#ephotoimg2').on('change', function () {
+                       $("#epreview2").html('');
+                       $("#epreview2").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#eimageform2").ajaxForm({
+                           target: '#epreview2'
+                       }).submit();
+                   });
+
+                    $('#ephotoimg3').on('change', function () {
+                       $("#epreview3").html('');
+                       $("#epreview3").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#eimageform3").ajaxForm({
+                           target: '#epreview3'
+                       }).submit();
+                   });
+
+                    $('#ephotoimg4').on('change', function () {
+                       $("#epreview4").html('');
+                       $("#epreview4").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#eimageform4").ajaxForm({
+                           target: '#epreview4'
+                       }).submit();
+                   });
+
+                    $('#ephotoimg5').on('change', function () {
+                       $("#epreview5").html('');
+                       $("#epreview5").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#eimageform5").ajaxForm({
+                           target: '#epreview5'
+                       }).submit();
+                   });
+
+                   // #######################################
+
+                    $('#photoimg1').on('change', function () {
+                       $("#preview1").html('');
+                       $("#preview1").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#imageform1").ajaxForm({
+                           target: '#preview1'
+                       }).submit();
+                   });
+
+                    $('#photoimg2').on('change', function () {
+                       $("#preview2").html('');
+                       $("#preview2").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#imageform2").ajaxForm({
+                           target: '#preview2'
+                       }).submit();
+                   });
+
+                    $('#photoimg3').on('change', function () {
+                       $("#preview3").html('');
+                       $("#preview3").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#imageform3").ajaxForm({
+                           target: '#preview3'
+                       }).submit();
+                   });
+
+                    $('#photoimg4').on('change', function () {
+                       $("#preview4").html('');
+                       $("#preview4").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#imageform4").ajaxForm({
+                           target: '#preview4'
+                       }).submit();
+                   });
+
+                    $('#photoimg5').on('change', function () {
+                       $("#preview5").html('');
+                       $("#preview5").html('<img src="<?=$this->Html->url('/')?>images/loader.gif" alt="Uploading...."/>');
+                       $("#imageform5").ajaxForm({
+                           target: '#preview5'
+                       }).submit();
+                   });
+
+                });
+            </script>
+
+
+            <script type="text/javascript">
+                function setLoginRequest(){
+                    //alert("Please Login");
+                    $("#postWithoutLogin").html("User Must be Loged In To Post");
+                    $('#Login').modal('show');
+                }
+
+                function pDtail(){
+                    var pid = $("#epostid100").val();
+                    var post = "'post1'";
+                    var btn = '<button type="button" onclick="editpostContinue('+post+')" class="btn btn-primary">Continue</button></span>';;
+                    $("#editpostContinue").html(btn);
+                    $('#epli1').addClass('active');
+                    $('#epli2').removeClass('active');
+                    $('#epli3').removeClass('active');
+                    $('#epdiv1').addClass('active');
+                    $('#epdiv2').removeClass('active');
+                    $('#epdiv3').removeClass('active');
+                    $("#estepNo").html('1');
+
+                }
+
+                function imgDtail(){
+                    var pid = $("#epostid100").val();
+                    var post = "'post2'";
+                    var btn = '<button type="button" onclick="editpostContinue('+post+')" class="btn btn-primary">Continue</button></span>';;
+                    $("#editpostContinue").html(btn);
+                    $('#epli2').addClass('active');
+                    $('#epli1').removeClass('active');
+                    $('#epli3').removeClass('active');
+                    $('#epdiv2').addClass('active');
+                    $('#epdiv1').removeClass('active');
+                    $('#epdiv3').removeClass('active');
+                    $("#estepNo").html('2');
+                }
+
+                function budDetail(){
+                    var pid = $("#epostid100").val();
+                    var post = "'post3'";
+                    var btn = '<button type="button" onclick="editpostContinue('+post+')" class="btn btn-primary">Continue</button></span>';;
+                    $("#editpostContinue").html(btn);
+                    $('#epli3').addClass('active');
+                    $('#epli1').removeClass('active');
+                    $('#epli2').removeClass('active');
+                    $('#epdiv3').addClass('active');
+                    $('#epdiv1').removeClass('active');
+                    $('#epdiv2').removeClass('active');
+                    $("#estepNo").html('3');
+                }
+
+                function editpostContinue(post){
+                    //alert(post);
+                    if(post == "post1"){
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo $this->Html->url('/'); ?>posts/editoldpost/",
+                            //dataType: "json",
+                            data: {id               : $("#epostid100").val(),
+                                   category_id      : $("#category_idval").val(),
+                                   subcategory_id      : $("#subcategory_idval").val(),
+                                   post_title       : $("#post_titleval").val(),
+                                   location         : $("#locationval").val(),
+                                   city             : $("#postCityval").val(),
+                                   state            : $("#postStateval").val(),
+                                   address          : $("#postAddressval").val(),
+                                   country          : $("#postCountryval").val(),
+                                   zip_code         : $("#postZip_codeval").val(),
+                                   post_description : $("#post_descriptionval").val()
+                                  }
+                        }).done(function(msg) {
+                            //alert(msg);
+                            if(msg != 0){
+                                var post = "'post2'";
+                                var btn = '<button type="button" onclick="editpostContinue('+post+')" class="btn btn-primary">Continue</button></span>';;
+                                $("#editpostContinue").html(btn);
+                                $('#epli2').addClass('active');
+                                $('#epli1').removeClass('active');
+                                $('#epli3').removeClass('active');
+                                $('#epdiv2').addClass('active');
+                                $('#epdiv1').removeClass('active');
+                                $('#epdiv3').removeClass('active');
+                                $("#estepNo").html('2');
+
+                            }
+                        });
+                    } if(post == "post2"){
+                        var pid = $("#epostid100").val();
+                        var post = "'post3'";
+                        var btn = '<button type="button" onclick="editpostContinue('+post+')" class="btn btn-primary">Continue</button></span>';;
+                        $("#editpostContinue").html(btn);
+                        $('#epli3').addClass('active');
+                        $('#epli1').removeClass('active');
+                        $('#epli2').removeClass('active');
+                        $('#epdiv3').addClass('active');
+                        $('#epdiv1').removeClass('active');
+                        $('#epdiv2').removeClass('active');
+                        $("#estepNo").html('3');
+                    } if(post == "post3"){
+
+
+
+                        //alert($("#price_conditionval").val()); alert($("#product_conditionval").val());
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo $this->Html->url('/'); ?>posts/editoldpostbudget/",
+                            //dataType: "json",
+                            data: {id               : $("#epostid100").val(),
+                                   budget               : $("#budgetval").val(),
+                                   price_condition      : $("#price_conditionval").val(),
+                                   product_condition    : $("#product_conditionval").val()
+                                  }
+                        }).done(function(msg) {
+                            $("#EditPost").modal('hide');
+                            //$("#modal_success").modal('show');
+                            //alert(msg)
+                            window.location.reload();
+                        });
+                    }
+                }
+
+                function deleteImg(imgid){
+                    //alert(imgid);
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo $this->Html->url('/'); ?>posts/deletePostImage/",
+                            //dataType: "json",
+                            data: {id : imgid}
+                        }).done(function(msg) {
+                            //alert(msg)
+                            $('#hide_'+imgid).hide();
+                            //window.location.reload();
+                        });
+                 }
+
+
+                function editPostModalOpen(pid){
+                    //alert(pid);
+                    //epostid100
+                    $('#epostid100').val(pid);
+
+
+
+
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo $this->Html->url('/'); ?>posts/fetchpostdata/",
+                        //dataType: "json",
+                        data: {pid: pid}
+                    }).done(function (msg) {
+                        //alert(respsText.Post.subcategory_id);
+                        //alert(msg);
+                        respsText = JSON.parse(msg);
+                        //alert(msg['Post']['location']);
+                        //alert(respsText.Post.subcategory_id);
+                        //alert(Object.keys(respsText.PostImage).length);
+
+                        $("#category_idval").val(respsText.Post.category_id);
+                        $("#subcategory_idval").val(respsText.Post.subcategory_id);
+                        $("#post_titleval").val(respsText.Post.post_title);
+                        $("#locationval").val(respsText.Post.location);
+                        $("#postCityval").val(respsText.Post.city);
+                        $("#postStateval").val(respsText.Post.state);
+                        $("#postAddressval").val(respsText.Post.address);
+                        $("#postCountryval").val(respsText.Post.country);
+                        $("#postZip_codeval").val(respsText.Post.zip_code);
+                        $("#post_descriptionval").val(respsText.Post.post_description);
+
+                        $( "#category_idval" ).trigger( "change" );
+                        setTimeout(function(){
+                            $("#subcategory_idval").val(respsText.Post.subcategory_id);
+                        },2000);
+
+                        $("#budgetval").val(respsText.Post.price);
+                        if(respsText.Post.price_condition == "Fixed"){
+                            $('input:radio[name="price_conditionval"]').filter('[value="Fixed"]').attr('checked', true);
+                        } else if(respsText.Post.price_condition == "Negotiable"){
+                            $('input:radio[name="price_conditionval"]').filter('[value="Negotiable"]').attr('checked', true);
+                        } else if(respsText.Post.price_condition == "Trade"){
+                            $('input:radio[name="price_conditionval"]').filter('[value="Trade"]').attr('checked', true);
+                        }
+
+                        if(respsText.Post.product_condition == "New"){
+                            $('input:radio[name="product_conditionval"]').filter('[value="New"]').attr('checked', true);
+                        } else if(respsText.Post.product_condition == "Used"){
+                            $('input:radio[name="product_conditionval"]').filter('[value="New"]').attr('checked', true);
+                        }
+
+                        //var ImgCnt=Object.keys(respsText.PostImage).length;
+                        //var pimgcnt = Object.keys(respsText.PostImage).length;
+                        var forum = respsText.PostImage;
+                        //alert(forum);
+                        for (var i = 0; i < forum.length; i++) {
+                                // forum.length
+                               var object = forum[i];
+                               var value = object.resizepath;
+                               var pimgid = object.id;
+                               $("#existimg").append('<li id="hide_'+pimgid+'"> <i class="fa fa-times" onclick="deleteImg('+pimgid+');"></i><img src="<?php echo $this->webroot;?>img/post_img/'+value+'" alt=""></li>');
+                        }
+                        $('#epostId').val(pid);
+                    });
+
+
+
+
+                    $("#EditPost").modal('show');
+                }
+
+
+                function savePost(post){
+                    if(post == "post1"){
+                        //alert('++ 1');
+                        //alert($("#category_id").val());
+			if($("#category_id").val()==""){ alert("Please Choose Category!"); $("#category_id").focus(); return false; }
+            //if($("#subcategory_id").val()==""){ alert("Please Choose Sub Category!"); $("#subcategory_id").focus(); return false; }
+			if($("#post_title").val()==""){ alert("Please Give Title Description!"); $("#post_title").focus(); return false; }
+			if($("#postLocation").val()==""){ alert("Please Give Location!"); $("#location").focus(); return false; }
+			if($("#postCity").val()==""){ alert("Please Select Location from the autocomplete!"); $("#postLocation").focus(); return false; }
+			if($("#post_description").val()==""){ alert("Please Give Description!"); $("#post_description").focus(); return false; }
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo $this->Html->url('/'); ?>posts/addnewpost/",
+                            //dataType: "json",
+                            data: {category_id      : $("#category_id").val(),
+                                   subcategory_id      : $("#subcategory_id").val(),
+                                   post_title       : $("#post_title").val(),
+                                   location         : $("#postLocation").val(),
+                                   city         : $("#postCity").val(),
+                                   state         : $("#postState").val(),
+                                   address         : $("#postAddress").val(),
+                                   country         : $("#postCountry").val(),
+                                   zip_code         : $("#postZip_code").val(),
+                                   post_description : $("#post_description").val()
+                                  }
+                        }).done(function(msg) {
+                            //alert(msg);
+                            if(msg != 0){
+                                $('#postId').val(msg);
+                                $('#pli1').removeClass('active');
+                                $('#pli2').addClass('active');
+                                $('#pdiv1').removeClass('active');
+                                $('#pdiv2').addClass('active');
+                                $("#stepNo").html(2);
+
+                                var post2 = "'post2'";
+                                var btn = '<button type="button" onclick="savePost('+post2+')" class="btn btn-primary">Continue</button></span>';;
+                                $("#postContinue").html(btn);
+                            }
+                        });
+                    } if(post == "post2"){
+                        $('#pli2').removeClass('active');
+                        $('#pli3').addClass('active');
+                        $('#pdiv2').removeClass('active');
+                        $('#pdiv3').addClass('active');
+                        $("#stepNo").html(3);
+                        var post3 = "'post3'";
+                        var btn = '<button type="button" onclick="savePost('+post3+')" class="btn btn-primary">Continue</button></span>';;
+                        $("#postContinue").html(btn);
+                    } if(post == "post3"){
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo $this->Html->url('/'); ?>posts/addnewpostbudget/",
+                            //dataType: "json",
+                            data: {budget               : $("#budget").val(),
+                                   price_condition      : $("#price_condition").val(),
+                                   product_condition    : $("#product_condition").val()
+                                  }
+
+                        }).done(function(msg) {
+                            //alert(msg);
+                            $('#category_id').val('');
+                            $('#subcategory_id').val('');
+                            $('#post_title').val('');
+                            $('#location').val('');
+                            $('#post_description').val('');
+                            $('#postId').val('');
+                            $('#budget').val('');
+                            $('#price_condition').val('');
+                            $('#product_condition').val('');
+                            $('#AddPost').modal('hide');
+                            $('#modal_success').modal('show');
+                            var link='<?php echo Configure::read("SITE_URL")?>posts/post_details/'+msg;                           
+                            
+                            $('#social_links_post_share').html('<li class="fb"><a href="javascript:void()" onclick="popWindow(\'http://www.facebook.com/sharer.php?u='+link+'\',\'Facebook\',\'500\',\'400\')" class="fa fa-facebook"></a></li><li class="gpls"><a href="javascript:void()" onclick="popWindow(\'http://plus.google.com/share?url='+link+'\',\'GooglePlus\',\'500\',\'400\')" class="fa fa-google-plus"></a></li><li class="twit"><a href="javascript:void()" onclick="popWindow(\'http://twitter.com/share?url='+link+'\',\'Twitter\',\'500\',\'258\')" class="fa fa-twitter"></a></li>');
+                            //var link=<?php echo Configure::read('SITE_URL')?>+'posts/post_details/'+msg;
+                            // Reload Window
+                            //window.location.reload();
+                        });
+                    }
+                }
+
+            </script>
+            <script>
+			$(".mouse-icon").click(function() {
+				$('html,body').animate({
+				scrollTop: $(".home-wrapper").offset().top},
+				'slow');
+			});
+			</script>
+			<script>
+
+			var didScroll;
+			var lastScrollTop = 0;
+			var delta = 5;
+			var navbarHeight = $('.navbar-default').outerHeight();
+
+			$(window).scroll(function(event){
+			    didScroll = true;
+			});
+
+			setInterval(function() {
+			    if (didScroll) {
+			        hasScrolled();
+			        didScroll = false;
+			    }
+			}, 250);
+
+			function hasScrolled() {
+			    var st = $(this).scrollTop();
+			    
+			    // Make sure they scroll more than delta
+			    if(Math.abs(lastScrollTop - st) <= delta)
+			        return;
+			    
+			    // If they scrolled down and are past the navbar, add class .nav-up.
+			    // This is necessary so you never see what is "behind" the navbar.
+			    if (st > lastScrollTop && st > navbarHeight){
+			        // Scroll Down
+			        
+			        $('.navbar-default').removeClass('sticky',1000);
+			        
+			        //console.log(st);
+			        
+			    } else {
+			        // Scroll Up
+			        if(st + $(window).height() < $(document).height()) {
+			        	
+			            $('.navbar-default').addClass('sticky',1000);
+			            if(st < 2)
+			            {
+							$('.navbar-default').removeClass('sticky',1000);
+						}
+			        }
+			    }
+			    
+			    lastScrollTop = st;
+				}
+</script>
+<script>
+	$(document).ready(function () {
+		$("#post_description").keyup(function(){
+		  $(".grey-text").text("Characters left: " + (150 - $(this).val().length));
+		  
+		  var values = parseInt($(this).val().length);		  
+		});
+	});
+
+</script>
+
+
+ <script>
+            function getsubcat_post()
+            {
+                var id=$('#category_id').val();
+                //alert(id);
+
+              $.ajax({
+              url     : "<?php echo $this->webroot;?>/posts/getsubcat",
+              type    : "POST",
+              cache   : false,
+              data    : {id : id},
+              success : function(data){
+                      //alert(data);
+                      $('#subcategory_id').html(data);
+              //return false;
+                    //$('#myModal'+id).modal('show');
+                     //$('#myModal').html(data);
+              }
+          });
+                
+            }
+
+             function getsubcat_post_edit()
+            {
+                var id=$('#category_idval').val();
+                //alert(id);
+
+              $.ajax({
+              url     : "<?php echo $this->webroot;?>/posts/getsubcat",
+              type    : "POST",
+              cache   : false,
+              data    : {id : id},
+              success : function(data){
+                      //alert(data);
+                      $('#subcategory_idval').html(data);
+              //return false;
+                    //$('#myModal'+id).modal('show');
+                     //$('#myModal').html(data);
+              }
+          });
+                
+            }
+            </script>
+
+<script>
+
+$(document).ready(function(){
+     var d = new Date();
+     var n = d.getTimezoneOffset();
+     $.ajax({
+              url     : "<?php echo $this->webroot;?>/posts/getgmttime",
+              type    : "POST",
+              cache   : false,
+              data    : {offset : n},
+              success : function(data){
+                      //alert(data);
+              //return false;
+             
+              }
+          });
+    
+    });
+
+</script>
+
+<script>
+    function popWindow(url,winName,w,h) {
+    if (window.open) {
+        if (poppedWindow) { poppedWindow = ''; }
+        windowW = w;
+        windowH = h;
+        var windowX = (screen.width/2)-(windowW/2);
+        var windowY = (screen.height/2)-(windowH/2);
+        var myExtra = "status=no,menubar=no,resizable=yes,toolbar=no,scrollbars=yes,addressbar=no";
+        var poppedWindow = window.open(url,winName,'width='+w+',height='+h+',top='+windowY+',left=' + windowX + ',' + myExtra + '');
+    }
+    else {
+        alert('Your security settings are not allowing our popup windows to function. Please make sure your security software allows popup windows to be opened by this web application.');
+    }
+    return false;
+}
+</script>
+
+
+<?php //echo $this->element('sql_dump'); ?>
+    </body>
+</html>

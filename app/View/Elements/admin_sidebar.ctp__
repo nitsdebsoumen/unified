@@ -1,0 +1,293 @@
+<?php
+$uploadLogoFolder = "site_logo";
+$uploadLogoPath = WWW_ROOT . $uploadLogoFolder;
+$LogoName = $sitesetting['Setting']['logo'];
+if(file_exists($uploadLogoPath . '/' . $LogoName) && $LogoName!=''){
+    $LogoLink=$this->webroot.'site_logo/'.$LogoName;        
+}else{
+    $LogoLink=$this->webroot.'adminFiles/images/logo.png';  
+}
+
+if(!empty($role_restrictions)) {
+    foreach ($role_restrictions as $key => $value) {
+        $saved_accesibility[] = $value['Adminrolemeta']['meta_key']; 
+    }
+} else {
+    $saved_accesibility = array();
+}
+
+//pr($userdetails);
+
+?>
+<!-- left side start-->
+<div class="left-side sticky-left-side">
+
+    <!--logo and iconic logo start-->
+    <div class="logo">
+        <a href="javascript:void(0);"><img src="<?php echo $LogoLink;?>" alt="" style="height: 41px;"></a>
+    </div>
+
+    <div class="logo-icon text-center">
+        <a href="javascript:void(0);"><img src="<?php echo $LogoLink;?>" style="height: 60px;" alt=""></a>
+    </div>
+    <!--logo and iconic logo end-->
+
+    <div class="left-side-inner">
+
+        <!-- visible to small devices only -->
+        <div class="visible-xs hidden-sm hidden-md hidden-lg">
+            <div class="media logged-user">		            
+                <div class="media-body">
+                    <h4><a href="<?php echo $this->webroot?>admin/users/edit/<?php echo $userdetails['User']['id']; ?>"><?php echo($userdetails['User']['first_name'].' '.$userdetails['User']['last_name'])?></a></h4>
+                </div>
+            </div>
+
+            <h5 class="left-nav-title">Account Information</h5>
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li><a href="<?php echo $this->webroot?>admin/users/edit/<?php echo $userdetails['User']['id']; ?>"><i class="fa fa-user"></i> <span>Profile</span></a></li>
+                <li><a href="<?php echo $this->webroot?>admin/users/changepwd"><i class="fa fa-user"></i> <span>Manage Password</span></a></li>
+                <li><a href="<?php echo $this->webroot?>admin/users/logout"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
+            </ul>
+        </div>
+
+        <!--sidebar nav start-->
+        <ul class="nav nav-pills nav-stacked custom-nav">
+<!--		        <li class="active"><a href="<?php echo $this->webroot?>admin/users/dashboard"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>-->
+            
+            <?php if($userdetails['User']['admin_type'] == '0' || in_array('manage_logo', $saved_accesibility) ) {  ?>
+            <li>
+                <a href="<?php echo $this->webroot?>admin/settings/sitelogo/1"><i class="fa fa-upload"></i> <span>Manage Logo</span></a>
+            </li>
+            <?php } ?>
+            
+            <li>
+                <a href="<?php echo $this->webroot?>admin/settings/edit/1"><i class="fa fa-cog"></i> <span>Manage Settings</span></a>
+            </li>
+            
+            <li class="menu-list <?php echo ($this->params['controller'] == 'adminroles') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Admin Roles</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'adminroles' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot?>admin/adminroles/index"> List Roles</a>
+                    </li>
+                    
+                    <li class="<?php echo ($this->params['controller'] == 'adminroles' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot?>admin/adminroles/add"> Add Roles</a>
+                    </li>
+                    
+                     <li class="<?php echo ($this->params['controller'] == 'adminroles' && $this->params['action'] == 'admin_privilege') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot?>admin/adminroles/privilege"> Set Privilege</a>
+                    </li>
+                </ul>
+            </li>          
+            
+            <li class="menu-list <?php echo ($this->params['controller'] == 'cms_page') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Contents</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'cms_page' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/cms_page/index"> List Contents</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'cms_page' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/cms_page/add"> Add Contents</a>
+                    </li>
+                </ul>
+            </li>
+            
+            
+            <li class="menu-list <?php echo ($this->params['controller'] == 'faqs') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>FAQ</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'faqs' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/faqs/index"> List FAQ</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'faqs' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/faqs/add"> Add FAQ</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="menu-list <?php echo ($this->params['controller'] == 'banners') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Banner</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'banners' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/banners/index"> List Banner</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'banners' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/banners/add"> Add Banner</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="menu-list <?php echo ($this->params['controller'] == 'homesliders') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Home Slider</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'homesliders' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/homesliders/index"> List Slider</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'homesliders' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/homesliders/add"> Add Slider</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="">
+                <a href=""><i class="fa fa-file-text"></i> <span>Footer</span></a>
+            </li>
+            
+            <li><a href="<?php echo $this->webroot?>admin/email_templates/index"><i class="fa fa-envelope"></i> <span>Email Templates</span></a></li>
+            <li class="menu-list <?php echo ($this->params['controller'] == 'users') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Users</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'users' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/users/list"> List Users</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'users' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/users/add"> Add Users</a>
+                    </li>
+                </ul>
+            </li>
+           
+
+             <li class="menu-list <?php echo ($this->params['controller'] == 'categories') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Categories</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'categories' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/categories/index"> List Categories</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'categories' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/categories/add"> Add Category</a>
+                    </li>
+                </ul>
+            </li>
+
+              <li class="menu-list <?php echo ($this->params['controller'] == 'posts') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-file-text"></i> <span>Posts</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'posts' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/posts/index"> List Posts</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'posts' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/posts/add"> Add Posts</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-list <?php echo ($this->params['controller'] == 'marketplaces') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-shopping-cart"></i> <span>MatchMaker</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'marketplaces' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/marketplaces/index"> List Market Places</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'marketplaces' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/marketplaces/add"> Add Market Places</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-list <?php echo ($this->params['controller'] == 'sales') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-pencil"></i> <span>Sales</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'sales' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/sales/index"> List Sales</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'sales' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/sales/add"> Add Sales</a>
+                    </li>
+                </ul>
+            </li>
+
+               <li class="menu-list <?php echo ($this->params['controller'] == 'membership_plans') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-pencil"></i> <span>Membership Plan</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'membership_plans' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/membership_plans/index"> List Membership Plan</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'membership_plans' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/membership_plans/add"> Add Membership Plan</a>
+                    </li>
+                </ul>
+            </li>
+
+          <li class="menu-list <?php echo ($this->params['controller'] == 'users' && ($this->params['action'] == 'admin_index' || $this->params['action'] == 'admin_add' )) ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-mobile"></i> <span>Contact Us</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'users' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/users/contact_us"> List Contact</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'users' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/users/contact_us_add"> Add Contact</a>
+                    </li>
+                </ul>
+            </li>
+
+
+             <li class="menu-list <?php echo ($this->params['controller'] == 'Seos') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-ticket"></i> <span>SEO Keywords Management</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'Seos' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Seos/listing"> List SEO Keywords</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'Seos' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Seos/add"> Add SEO Keywords</a>
+                    </li>
+                </ul>
+            </li>
+
+              <li class="menu-list <?php echo ($this->params['controller'] == 'Languages') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-camera"></i> <span>Language Management</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'Languages' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Languages/listing"> List Languages</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'Languages' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Languages/add"> Add Languages</a>
+                    </li>
+                </ul>
+            </li>
+
+             <li class="menu-list <?php echo ($this->params['controller'] == 'Sitemaps') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-ticket"></i> <span>Sitemaps</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'Sitemaps' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Sitemaps/listing"> List Sitemap</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'Sitemaps' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Sitemaps/add"> Add Sitemap</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-list <?php echo ($this->params['controller'] == 'Analytics') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-mobile"></i> <span>Analytics</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'Analytics' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Analytics/listing"> List Analytics</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'Analytics' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/Analytics/add"> Add Analytics</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="menu-list <?php echo ($this->params['controller'] == 'Newsletters') ? 'nav-active': ''; ?>">
+                <a href=""><i class="fa fa-mobile"></i> <span>Newsletter</span></a>
+                <ul class="sub-menu-list">
+                    <li class="<?php echo ($this->params['controller'] == 'Newsletters' && $this->params['action'] == 'admin_index') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/newsletters/index"> List Newsletter</a>
+                    </li>
+                    <li class="<?php echo ($this->params['controller'] == 'Newsletters' && $this->params['action'] == 'admin_add') ? 'active' : ''; ?>">
+                        <a href="<?php echo $this->webroot; ?>admin/newsletters/add"> Add Newsletter</a>
+                    </li>
+                </ul>
+            </li>
+
+
+           
+            
+
+        </ul>
+        <!--sidebar nav end-->
+
+    </div>
+</div>
+<!-- left side end-->
